@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 8.0.19)
 # Database: cmsadmin
-# Generation Time: 2020-04-28 15:47:50 +0000
+# Generation Time: 2020-04-29 03:57:03 +0000
 # ************************************************************
 
 
@@ -28,7 +28,7 @@ DROP TABLE IF EXISTS `ad`;
 
 CREATE TABLE `ad` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '广告名称- 唯一值',
+  `name` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '广告名称- 唯一值',
   `show` tinyint NOT NULL DEFAULT '1' COMMENT '开启 0 关闭 1开启',
   `note` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '备注',
   `createTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -42,7 +42,8 @@ LOCK TABLES `ad` WRITE;
 
 INSERT INTO `ad` (`id`, `name`, `show`, `note`, `createTime`, `updateTime`)
 VALUES
-	(1,'首页',1,NULL,'2020-04-26 17:49:53',NULL);
+	(2,'222',1,'111','2020-04-29 09:23:01',NULL),
+	(4,'333',0,NULL,'2020-04-29 09:25:26',NULL);
 
 /*!40000 ALTER TABLE `ad` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -55,15 +56,24 @@ DROP TABLE IF EXISTS `ad_content`;
 
 CREATE TABLE `ad_content` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `img` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '图片文件',
   `aid` int NOT NULL COMMENT '广告名id',
   `title` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '广告标题',
   `url` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '广告url',
   `isTarget` tinyint NOT NULL DEFAULT '0' COMMENT '新窗口 0 否  1是',
-  `show` tinyint DEFAULT NULL COMMENT '是否显示 0否 1是',
   `createTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='广告内容关联 ad表';
 
+LOCK TABLES `ad_content` WRITE;
+/*!40000 ALTER TABLE `ad_content` DISABLE KEYS */;
+
+INSERT INTO `ad_content` (`id`, `img`, `aid`, `title`, `url`, `isTarget`, `createTime`)
+VALUES
+	(5,'/upload/images/1588132111.jpeg',2,'3542','543534',0,'2020-04-29 10:48:33');
+
+/*!40000 ALTER TABLE `ad_content` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table admin
@@ -90,7 +100,7 @@ LOCK TABLES `admin` WRITE;
 
 INSERT INTO `admin` (`id`, `username`, `password`, `name`, `phone`, `role`, `lastLoginTime`, `createTime`, `updateTime`)
 VALUES
-	(1,'www','hkwooo','超管','15802818111',1,NULL,'2020-04-19 16:08:34','2020-04-26 10:02:42'),
+	(1,'www','hkwooo','111s',NULL,1,NULL,'2020-04-19 16:08:34','2020-04-29 02:15:16'),
 	(2,'tests','666666','22','33',0,NULL,'2020-04-23 10:15:32',NULL),
 	(3,'test1','111111','fds','fds',0,NULL,'2020-04-23 12:29:20',NULL);
 
