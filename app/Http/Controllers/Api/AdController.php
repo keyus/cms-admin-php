@@ -5,10 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Throwable;
 
 /**
- * 广告名称列表
+ * 广告栏位
  */
 class AdController extends Controller
 {
@@ -18,10 +17,10 @@ class AdController extends Controller
     function list(Request $request) {
         $name = $request->name;
         $ad = DB::table('ad');
-        if ($username) {
-            $admin->where('name', $name);
+        if ($name) {
+            $ad->where('name', $name);
         }
-        return $admin->paginate(15);
+        return $ad->orderBy('createTime','desc')->paginate(15);
     }
 
     /**
@@ -37,19 +36,14 @@ class AdController extends Controller
         ]);
 
         $id = $request->id;
-        try{
-            DB::transaction(function () {
-                DB::table('ad')
-                    ->where('id', $id)
-                    ->delete();
-                DB::table('ad_content')
-                    ->where('aid', $id)
-                    ->delete();
-            });
-            return response()->json(['data' => true]);
-        }catch(Throwable $e){
-            return response()->json(['message' => '操作失败'], 522);
-        };
+        DB::table('ad_content')
+            ->where('aid', $id)
+            ->delete();
+        DB::table('ad')
+            ->where('id', $id)
+            ->delete();
+        return response()->json(['data' => true]);
+
     }
 
     /**
@@ -59,26 +53,24 @@ class AdController extends Controller
     {
         $request->validate(
             [
-                'username' => 'regex:/^[a-zA-Z0-9]{4,20}$/i|unique:admin',
-                'password' => 'regex:/^[a-zA-Z0-9]{4,20}$/i',
+                'name' => 'unique:ad',
+                'show' => 'boolean',
             ],
             [
-                'username.regex' => '用户名为4-20位数字或字母组成',
-                'username.unique' => '用户名已存在',
-                'password.regex' => '密码为4-20位数字或字母组成',
+                'name.unique' => '广告栏位名称已存在',
+                'show.boolean' => '显示属性错误',
             ]
         );
-        $username = $request->username;
-        $password = $request->password;
         $name = $request->name;
-        $phone = $request->phone;
-        $res = DB::table('admin')
-            ->insert([
-                'username' => $username,
-                'password' => $password,
-                'name' => $name,
-                'phone' => $phone,
-            ]);
+        $show = $request->show;
+        $note = $request->note;
+        $value = [
+            'name' => $name,
+            'show' => $show,
+            'note' => $note,
+        ];
+        $res = DB::table('ad')
+            ->insert($value);
         if ($res) {
             return response()->json(['data' => true]);
         }
@@ -86,34 +78,33 @@ class AdController extends Controller
     }
 
     /**
-     * 编辑管理员
+     * 编辑
      */
     public function edit(Request $request)
     {
         $request->validate(
             [
                 'id' => 'required|integer',
-                'password' => 'regex:/^[a-zA-Z0-9]{4,20}$/i',
+                'name' => 'unique:ad,name,' . $request->id,
+                'show' => 'boolean',
             ],
             [
                 'id.required' => '参数错误',
                 'id.integer' => '参数错误',
-                'password.regex' => '密码为4-20位数字或字母组成',
+                'name.unique' => '广告栏位名称已存在',
+                'show.boolean' => '显示属性错误',
             ]
         );
         $id = $request->id;
-        $password = $request->password;
         $name = $request->name;
-        $phone = $request->phone;
+        $show = $request->show;
+        $note = $request->note;
         $value = [
             'name' => $name,
-            'phone' => $phone,
-            'updateTime' => date('y-m-d H:i:s'),
+            'show' => $show,
+            'note' => $note,
         ];
-        if ($password) {
-            $value['password'] = $password;
-        }
-        $res = DB::table('admin')
+        $res = DB::table('ad')
             ->where('id', $id)
             ->update($value);
         if ($res) {

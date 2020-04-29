@@ -14,7 +14,7 @@ class ChannelController extends Controller
     function list() {
         return DB::table('channel')
             ->select('id', 'title', 'model', 'show', 'sort')
-            ->orderBy('sort', 'desc')
+            ->orderBy('createTime','desc')
             ->get();
     }
 

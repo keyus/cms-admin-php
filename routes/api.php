@@ -33,4 +33,16 @@ Route::name('api.')->group(function () {
     Route::post('links/delete', 'Api\LinksController@delete');
     Route::post('links/add', 'Api\LinksController@add');
     Route::post('links/edit', 'Api\LinksController@edit');
+
+     //广告栏位
+     Route::post('ad', 'Api\AdController@list');
+     Route::post('ad/delete', 'Api\AdController@delete');
+     Route::post('ad/add', 'Api\AdController@add');
+     Route::post('ad/edit', 'Api\AdController@edit');
+
+     //广告内容
+     Route::post('adContent', 'Api\AdContentController@list');
+     Route::post('adContent/delete', 'Api\AdContentController@delete');
+     Route::post('adContent/add', 'Api\AdContentController@add');
+     Route::post('adContent/edit', 'Api\AdContentController@edit');
 });
