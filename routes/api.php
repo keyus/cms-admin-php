@@ -4,6 +4,12 @@ Route::name('api.')->group(function () {
     //图片上传
     Route::post('image/upload', 'Api\ImageController@upload');
 
+    //会员中心
+    Route::post('member', 'Api\MemberController@list');
+    Route::post('member/delete', 'Api\MemberController@delete');
+    Route::post('member/add', 'Api\MemberController@add');
+    Route::post('member/edit', 'Api\MemberController@edit');
+
     //管理员
     Route::post('admin', 'Api\AdminController@list');
     Route::post('admin/delete', 'Api\AdminController@delete');
@@ -45,4 +51,8 @@ Route::name('api.')->group(function () {
      Route::post('adContent/delete', 'Api\AdContentController@delete');
      Route::post('adContent/add', 'Api\AdContentController@add');
      Route::post('adContent/edit', 'Api\AdContentController@edit');
+
+     //站点基本信息
+     Route::post('site', 'Api\SiteController@list');
+     Route::post('site/edit', 'Api\SiteController@edit');
 });
