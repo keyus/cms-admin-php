@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 8.0.19)
 # Database: cmsadmin
-# Generation Time: 2020-04-29 03:57:03 +0000
+# Generation Time: 2020-05-01 13:15:40 +0000
 # ************************************************************
 
 
@@ -84,7 +84,7 @@ DROP TABLE IF EXISTS `admin`;
 CREATE TABLE `admin` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '用户名 唯一值',
-  `password` varchar(20) NOT NULL DEFAULT '' COMMENT '密码',
+  `password` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '密码',
   `name` varchar(20) DEFAULT NULL COMMENT '姓名',
   `phone` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '手机号',
   `role` tinyint NOT NULL DEFAULT '0' COMMENT '0 普通管理  1超级管理',
@@ -101,7 +101,7 @@ LOCK TABLES `admin` WRITE;
 INSERT INTO `admin` (`id`, `username`, `password`, `name`, `phone`, `role`, `lastLoginTime`, `createTime`, `updateTime`)
 VALUES
 	(1,'www','hkwooo','111s',NULL,1,NULL,'2020-04-19 16:08:34','2020-04-29 02:15:16'),
-	(2,'tests','666666','22','33',0,NULL,'2020-04-23 10:15:32',NULL),
+	(2,'tests','666666','11','33',0,NULL,'2020-04-23 10:15:32','2020-05-01 13:04:13'),
 	(3,'test1','111111','fds','fds',0,NULL,'2020-04-23 12:29:20',NULL);
 
 /*!40000 ALTER TABLE `admin` ENABLE KEYS */;
@@ -250,17 +250,27 @@ DROP TABLE IF EXISTS `member`;
 CREATE TABLE `member` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '会员账号6-20',
-  `password` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '会员密码6-20',
+  `password` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '会员密码6-20',
   `name` varchar(20) DEFAULT NULL COMMENT '会员姓名',
   `phone` varchar(11) DEFAULT NULL COMMENT '会员手机号',
   `email` varchar(50) DEFAULT NULL COMMENT '会员邮箱',
   `nickname` varchar(20) DEFAULT NULL COMMENT '会员昵称',
-  `level` tinyint NOT NULL DEFAULT '1' COMMENT '会员等级 1 普通 2交易会员  3 vip会员(有子会员)',
+  `level` tinyint NOT NULL DEFAULT '0' COMMENT '会员等级 0 注册会员 1交易会员  2 普通代理 3高级代理',
   `createTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updateTime` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+LOCK TABLES `member` WRITE;
+/*!40000 ALTER TABLE `member` DISABLE KEYS */;
+
+INSERT INTO `member` (`id`, `username`, `password`, `name`, `phone`, `email`, `nickname`, `level`, `createTime`, `updateTime`)
+VALUES
+	(2,'m012345','1bbd886460827015e5d605ed44252251','11','22','32','42',0,'2020-05-01 19:54:57','2020-05-01 13:10:02');
+
+/*!40000 ALTER TABLE `member` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table member_account
@@ -343,19 +353,30 @@ DROP TABLE IF EXISTS `site`;
 
 CREATE TABLE `site` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `name` int DEFAULT NULL,
-  `logo` int DEFAULT NULL,
-  `favicon` int DEFAULT NULL,
-  `www` int DEFAULT NULL,
-  `indexTitle` int DEFAULT NULL,
-  `indexKey` int DEFAULT NULL,
-  `indexDesc` int DEFAULT NULL,
-  `copyright` int DEFAULT NULL,
-  `servicePhone` int DEFAULT NULL,
-  `mobileLogo` int DEFAULT NULL,
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '网站名称',
+  `logo` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '网站Logo',
+  `net` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '网址',
+  `seoTitle` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '首页标题',
+  `seoKey` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '首页关键字',
+  `seoDesc` varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '首页描述',
+  `copyright` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '版权信息',
+  `phone` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '服务电话',
+  `mobileLogo` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '手机logo',
+  `caseNumber` varchar(50) DEFAULT NULL COMMENT '备案号',
+  `pcCode` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '第三方代码 pc',
+  `mobileCode` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '第三方代码 mobile',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='站点配置';
 
+LOCK TABLES `site` WRITE;
+/*!40000 ALTER TABLE `site` DISABLE KEYS */;
+
+INSERT INTO `site` (`id`, `name`, `logo`, `net`, `seoTitle`, `seoKey`, `seoDesc`, `copyright`, `phone`, `mobileLogo`, `caseNumber`, `pcCode`, `mobileCode`)
+VALUES
+	(1,'中国','/upload/images/1587961126.jpeg','www.baidu.com',NULL,'13','14','15','028-28382932','/upload/images/1587961126.jpeg','kfdsirew','<dkfdsj>','<kiwere>');
+
+/*!40000 ALTER TABLE `site` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 
