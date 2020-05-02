@@ -88,7 +88,7 @@ class MemberController extends Controller
     }
 
     /**
-     * 编辑管理员
+     * 编辑
      */
     public function edit(Request $request)
     {

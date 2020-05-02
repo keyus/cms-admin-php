@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 8.0.19)
 # Database: cmsadmin
-# Generation Time: 2020-05-01 13:15:40 +0000
+# Generation Time: 2020-05-02 10:22:03 +0000
 # ************************************************************
 
 
@@ -236,7 +236,8 @@ INSERT INTO `links` (`id`, `name`, `url`, `show`, `img`, `type`, `sort`, `create
 VALUES
 	(1,'百度','http://www.baidu.com',1,NULL,0,50,'2020-04-26 16:42:22',NULL),
 	(3,'3543543','hello',1,NULL,0,50,'2020-04-26 16:49:49',NULL),
-	(4,'53','fdsfds',0,'/upload/images/1587895102.jpeg',1,45,'2020-04-26 16:50:42','2020-04-26 10:01:28');
+	(4,'53','fdsfds',0,'/upload/images/1588389987.jpeg',1,45,'2020-04-26 16:50:42','2020-05-02 03:26:29'),
+	(5,'中国','21231',1,'/upload/images/1588389973.jpeg',1,50,'2020-05-02 10:26:15',NULL);
 
 /*!40000 ALTER TABLE `links` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -255,7 +256,7 @@ CREATE TABLE `member` (
   `phone` varchar(11) DEFAULT NULL COMMENT '会员手机号',
   `email` varchar(50) DEFAULT NULL COMMENT '会员邮箱',
   `nickname` varchar(20) DEFAULT NULL COMMENT '会员昵称',
-  `level` tinyint NOT NULL DEFAULT '0' COMMENT '会员等级 0 注册会员 1交易会员  2 普通代理 3高级代理',
+  `level` tinyint NOT NULL DEFAULT '0' COMMENT '会员等级 0 注册会员 1交易会员  2 普通代理 3高级代理  4 内部会员',
   `createTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updateTime` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
@@ -267,7 +268,8 @@ LOCK TABLES `member` WRITE;
 
 INSERT INTO `member` (`id`, `username`, `password`, `name`, `phone`, `email`, `nickname`, `level`, `createTime`, `updateTime`)
 VALUES
-	(2,'m012345','1bbd886460827015e5d605ed44252251','11','22','32','42',0,'2020-05-01 19:54:57','2020-05-01 13:10:02');
+	(1,'001','1bbd886460827015e5d605ed44252251','系统内置','','','',4,'2020-05-01 19:54:57','2020-05-01 13:10:02'),
+	(3,'tests11','1bbd886460827015e5d605ed44252251',NULL,NULL,NULL,NULL,0,'2020-05-02 10:50:17',NULL);
 
 /*!40000 ALTER TABLE `member` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -280,20 +282,35 @@ DROP TABLE IF EXISTS `member_account`;
 
 CREATE TABLE `member_account` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `username` varchar(30) NOT NULL DEFAULT '' COMMENT '交易账户',
-  `name` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '平台名称',
-  `idCard` varchar(20) DEFAULT NULL COMMENT '交易账户对应的身份证号',
-  `img1` varchar(100) DEFAULT '' COMMENT '照片资料1',
-  `img2` varchar(100) DEFAULT NULL COMMENT '照片资料2',
-  `img3` varchar(100) DEFAULT NULL COMMENT '照片资料3',
-  `img4` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '照片资料4',
-  `bankImg1` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '银行卡资料1',
-  `bankImg2` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '银行卡资料2',
+  `account` varchar(50) NOT NULL DEFAULT '' COMMENT '交易账号',
+  `username` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '001' COMMENT '会员账号 001 为系统，如果不填写则为系统内部交易账号',
+  `name` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '姓名',
+  `active` tinyint NOT NULL DEFAULT '0' COMMENT '是否激活 0未激活  1激活',
+  `idCard` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '交易账户对应的身份证号',
+  `platform` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '网站平台' COMMENT '平台名称',
+  `img1` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '照片资料 多张用逗号 隔开 ,',
+  `img2` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '照片资料 多张用逗号 隔开 ,',
+  `img3` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '照片资料 多张用逗号 隔开 ,',
+  `img4` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '照片资料 多张用逗号 隔开 ,',
+  `bankImg1` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '照片资料 ',
+  `bankImg2` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '照片资料',
   `createTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updateTime` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `username` (`username`)
+  UNIQUE KEY `account` (`account`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员交易账户';
 
+LOCK TABLES `member_account` WRITE;
+/*!40000 ALTER TABLE `member_account` DISABLE KEYS */;
+
+INSERT INTO `member_account` (`id`, `account`, `username`, `name`, `active`, `idCard`, `platform`, `img1`, `img2`, `img3`, `img4`, `bankImg1`, `bankImg2`, `createTime`, `updateTime`)
+VALUES
+	(1,'32342432','001','rwrewrew',0,NULL,'网站平台','','','','','','','2020-05-02 09:32:16',NULL),
+	(2,'232342432','001','中国',0,NULL,'网站平台',NULL,'','','','','','2020-05-02 09:37:16',NULL),
+	(3,'001','001','kissabc',1,NULL,'网站平台','/upload/images/1588388712.jpeg',NULL,NULL,NULL,NULL,NULL,'2020-05-02 10:05:28','2020-05-02 03:48:08');
+
+/*!40000 ALTER TABLE `member_account` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table member_money
@@ -303,15 +320,27 @@ DROP TABLE IF EXISTS `member_money`;
 
 CREATE TABLE `member_money` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `memberId` int NOT NULL COMMENT '会员id',
-  `accountId` int NOT NULL COMMENT '交易账户id',
-  `money` int NOT NULL DEFAULT '0' COMMENT '佣金',
-  `status` tinyint NOT NULL DEFAULT '0' COMMENT '结算状态 0 未结算 1已结算',
   `date` datetime NOT NULL COMMENT '产生佣金 归属日期',
+  `account` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '会员id',
+  `username` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '交易账户id',
+  `money` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '佣金 元',
+  `status` tinyint NOT NULL DEFAULT '0' COMMENT '结算状态 0 未结算 1已结算',
   `createTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updateTime` datetime DEFAULT NULL COMMENT '更新日期',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员资金记录';
 
+LOCK TABLES `member_money` WRITE;
+/*!40000 ALTER TABLE `member_money` DISABLE KEYS */;
+
+INSERT INTO `member_money` (`id`, `date`, `account`, `username`, `money`, `status`, `createTime`, `updateTime`)
+VALUES
+	(1,'2020-01-20 00:00:00','001','001',1532.00,0,'2020-05-02 16:21:38',NULL),
+	(3,'2020-05-05 16:55:41','001','001',12.00,1,'2020-05-02 16:55:48',NULL),
+	(4,'2020-05-12 00:00:00','001','001',-324324.00,0,'2020-05-02 16:56:48',NULL);
+
+/*!40000 ALTER TABLE `member_money` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table member_open_account
@@ -373,7 +402,7 @@ LOCK TABLES `site` WRITE;
 
 INSERT INTO `site` (`id`, `name`, `logo`, `net`, `seoTitle`, `seoKey`, `seoDesc`, `copyright`, `phone`, `mobileLogo`, `caseNumber`, `pcCode`, `mobileCode`)
 VALUES
-	(1,'中国','/upload/images/1587961126.jpeg','www.baidu.com',NULL,'13','14','15','028-28382932','/upload/images/1587961126.jpeg','kfdsirew','<dkfdsj>','<kiwere>');
+	(1,'中国','/upload/images/1588389824.jpeg','www.baidu.com',NULL,'13','14','15','028-28382932','/upload/images/1587961126.jpeg','kfdsirew','<dkfdsj>','<kiwere>');
 
 /*!40000 ALTER TABLE `site` ENABLE KEYS */;
 UNLOCK TABLES;
