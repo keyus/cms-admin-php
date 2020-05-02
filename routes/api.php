@@ -22,6 +22,13 @@ Route::name('api.')->group(function () {
     Route::post('member/money/add', 'Api\MemberMoneyController@add');
     Route::post('member/money/edit', 'Api\MemberMoneyController@edit');
 
+     //会员中心-资金记录
+     Route::post('member/open', 'Api\MemberOpenController@list');
+     Route::post('member/open/delete', 'Api\MemberOpenController@delete');
+     Route::post('member/open/add', 'Api\MemberOpenController@add');
+     Route::post('member/open/edit', 'Api\MemberOpenController@edit');
+ 
+
     //管理员
     Route::post('admin', 'Api\AdminController@list');
     Route::post('admin/delete', 'Api\AdminController@delete');

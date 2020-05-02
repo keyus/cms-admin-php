@@ -15,8 +15,14 @@ class MemberMoneyController extends Controller
      * 列表读取
      */
     function list(Request $request) {
+        $request->validate([
+            'date' => 'array',
+        ], [
+            'date.array' => '参数错误',
+        ]);
         $account = $request->account;
         $username = $request->username;
+        $status = $request->status;
         $date = $request->date;
         $member_money = DB::table('member_money');
         if ($account) {
@@ -25,8 +31,10 @@ class MemberMoneyController extends Controller
         if ($username) {
             $member_money->where('username', $username);
         }
+        if(isset($status)){
+            $member_money->where('status', $status);
+        }
         if($date){
-            // list($startDate, $endDate) = $date;
             $member_money->whereBetween('date', $date);
         }
         return $member_money->orderBy('date', 'desc')->paginate(15);

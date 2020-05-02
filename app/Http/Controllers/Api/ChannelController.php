@@ -83,8 +83,8 @@ class ChannelController extends Controller
             'model' => $model,
             'show' => $show,
         ];
-        if($sort) $row['sort'] = $sort;
-
+        if(isset($sort)) $row['sort'] = $sort;
+        
         $res = DB::table('channel')
             ->insert($row);
         if ($res) {
@@ -139,7 +139,7 @@ class ChannelController extends Controller
             'content' => $content,
             'updateTime' => date('y-m-d H:i:s'),
         ];
-        if($sort) $row['sort'] = $sort;
+        if(isset($sort)) $row['sort'] = $sort;
 
         $res = DB::table('channel')
             ->where('id', $id)

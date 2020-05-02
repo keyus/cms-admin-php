@@ -70,9 +70,7 @@ class LinksController extends Controller
             'show' => $show,
             'img' => $img,
         ];
-        if ($sort) {
-            $row['sort'] = $sort;
-        }
+        if(isset($sort)) $row['sort'] = $sort;
 
         $res = DB::table('links')
             ->insert($row);
@@ -115,9 +113,7 @@ class LinksController extends Controller
             'img' => $img,
             'updateTime' => date('y-m-d H:i:s'),
         ];
-        if ($sort) {
-            $row['sort'] = $sort;
-        }
+        if(isset($sort)) $row['sort'] = $sort;
 
         $res = DB::table('links')
             ->where('id', $id)
