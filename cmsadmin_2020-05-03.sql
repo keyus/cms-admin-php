@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 8.0.19)
 # Database: cmsadmin
-# Generation Time: 2020-05-02 10:22:03 +0000
+# Generation Time: 2020-05-03 04:09:22 +0000
 # ************************************************************
 
 
@@ -343,35 +343,40 @@ VALUES
 UNLOCK TABLES;
 
 
-# Dump of table member_open_account
+# Dump of table member_open
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `member_open_account`;
+DROP TABLE IF EXISTS `member_open`;
 
-CREATE TABLE `member_open_account` (
+CREATE TABLE `member_open` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `memberId` int NOT NULL COMMENT '会员号',
-  `idCard` int NOT NULL COMMENT '身份证号',
-  `name` varchar(20) NOT NULL DEFAULT '' COMMENT '姓名',
+  `name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '姓名',
+  `idCard` varchar(20) NOT NULL DEFAULT '' COMMENT '身份证号',
+  `username` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '会员账号',
+  `status` tinyint NOT NULL DEFAULT '0' COMMENT '状态： 0未处理  1开户成功  2开户失败',
+  `issue` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '失败原因',
+  `platform` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '网站平台' COMMENT '平台名称',
   `img1` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '照片资料1',
   `img2` varchar(100) DEFAULT NULL COMMENT '照片资料2',
   `img3` varchar(100) DEFAULT NULL COMMENT '照片资料3',
   `img4` varchar(100) DEFAULT NULL COMMENT '照片资料4',
   `bankImg1` varchar(100) DEFAULT NULL COMMENT '银行卡资料1',
   `bankImg2` varchar(100) DEFAULT NULL COMMENT '银行卡资料2',
-  `status` tinyint NOT NULL DEFAULT '0' COMMENT '状态： 0未处理  1开户成功  2开户失败',
   `createTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updateTime` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员开户资料提交';
 
-LOCK TABLES `member_open_account` WRITE;
-/*!40000 ALTER TABLE `member_open_account` DISABLE KEYS */;
+LOCK TABLES `member_open` WRITE;
+/*!40000 ALTER TABLE `member_open` DISABLE KEYS */;
 
-INSERT INTO `member_open_account` (`id`, `memberId`, `idCard`, `name`, `img1`, `img2`, `img3`, `img4`, `bankImg1`, `bankImg2`, `status`, `createTime`)
+INSERT INTO `member_open` (`id`, `name`, `idCard`, `username`, `status`, `issue`, `platform`, `img1`, `img2`, `img3`, `img4`, `bankImg1`, `bankImg2`, `createTime`, `updateTime`)
 VALUES
-	(1,2,1,'343',NULL,NULL,NULL,NULL,NULL,NULL,0,'2020-04-19 16:03:38');
+	(2,'323','513822198901110193','323432',2,'资料填写错误','网站平台',NULL,NULL,NULL,NULL,NULL,NULL,'2020-04-19 16:03:38',NULL),
+	(3,'323','513822198901110193','323432',0,NULL,'网站平台',NULL,NULL,NULL,NULL,NULL,NULL,'2020-04-19 16:03:38','2020-05-03 03:49:21'),
+	(4,'东哥','51382219890111023X','001',2,'32423','网站平台','/upload/images/1587961126.jpeg','/upload/images/1587961126.jpeg','/upload/images/1587961126.jpeg','/upload/images/1587961126.jpeg','/upload/images/1587961126.jpeg','/upload/images/1587961126.jpeg','2020-05-02 22:08:46','2020-05-03 03:52:22');
 
-/*!40000 ALTER TABLE `member_open_account` ENABLE KEYS */;
+/*!40000 ALTER TABLE `member_open` ENABLE KEYS */;
 UNLOCK TABLES;
 
 

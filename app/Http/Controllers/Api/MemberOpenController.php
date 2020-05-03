@@ -106,7 +106,7 @@ class MemberOpenController extends Controller
             'idCard' => $idCard,
             'username' => $username,
             'status' => $status,
-            
+
             'img1' => $img1,
             'img2' => $img2,
             'img3' => $img3,
@@ -134,54 +134,32 @@ class MemberOpenController extends Controller
         $request->validate(
             [
                 'id' => 'required|integer',
-                'account' => 'unique:member_account,account,' . $request->id,
-                'username' => 'required|exists:member,username',
-                'active' => 'required|boolean',
+                'status' => 'required|in: 1,2',
+                'issue' => 'required_if:status,2',
             ],
             [
                 'id.required' => '参数错误',
                 'id.integer' => '参数错误',
-                'account.required' => '交易账号未填写',
-                'account.unique' => '交易账号已存在',
-                'username.required' => '未绑定会员账号',
-                'username.exists' => '会员账号不存在',
-                'active.required' => '激活状态错误',
-                'active.boolean' => '激活状态错误',
+                'status.in' => '处理状态参数错误',
+                'issue.required_if' => '请填写失败原因',
             ]
         );
         $id = $request->id;
-        $account = $request->account;
-        $username = $request->username;
-        $name = $request->name;
-        $active = $request->active;
-        $idCard = $request->idCard;
-        $platform = $request->platform;
-        $img1 = $request->img1;
-        $img2 = $request->img2;
-        $img3 = $request->img3;
-        $img4 = $request->img4;
-        $bankImg1 = $request->bankImg1;
-        $bankImg2 = $request->bankImg2;
-
-        $values = [
-            'account' => $account,
-            'username' => $username,
-            'name' => $name,
-            'active' => $active,
-            'idCard' => $idCard,
-            'img1' => $img1,
-            'img2' => $img2,
-            'img3' => $img3,
-            'img4' => $img4,
-            'bankImg1' => $bankImg1,
-            'bankImg2' => $bankImg2,
-            'updateTime' => date('y-m-d H:i:s'),
-        ];
-        if ($platform) {
-            $values['platform'] = $platform;
+        $find = Db::table('member_open')->where('id', $id)->first();
+        if ($find->status != 0) {
+            return response()->json(['message' => '操作失败'], 522);
         }
 
-        $res = DB::table('member_account')
+        $status = $request->status;
+        $issue = $request->issue;
+        $values = [
+            'status' => $status,
+            'updateTime' => date('y-m-d H:i:s'),
+        ];
+        if ($issue) {
+            $values['issue'] = $issue;
+        }
+        $res = DB::table('member_open')
             ->where('id', $id)
             ->update($values);
         if ($res) {
