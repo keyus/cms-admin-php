@@ -1,0 +1,5 @@
+1.laravel auth 默认采用的加密  bcrypt
+
+2.laravel route api路由 会默认加上前坠  api,
+
+3.laravel auth guard 守卫，默认使用的是  web   /config/auth 

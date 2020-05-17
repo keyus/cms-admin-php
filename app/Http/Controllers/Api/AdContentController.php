@@ -21,7 +21,7 @@ class AdContentController extends Controller
             'aid.required' => '参数错误',
             'aid.integer' => '参数错误',
         ]);
-        $aid = $request->aid;
+        $aid = request('aid');
         return DB::table('ad_content')
             ->where('aid', $aid)
             ->orderBy('createTime', 'desc')->get();
@@ -67,18 +67,7 @@ class AdContentController extends Controller
                 'isTarget.boolean' => '参数错误',
             ]
         );
-        $img = $request->img;
-        $aid = $request->aid;
-        $title = $request->title;
-        $url = $request->url;
-        $isTarget = $request->isTarget;
-        $value = [
-            'img' => $img,
-            'aid' => $aid,
-            'title' => $title,
-            'url' => $url,
-            'isTarget' => $isTarget,
-        ];
+        $value = request(['img', 'aid', 'title', 'url', 'isTarget']);
         $res = DB::table('ad_content')
             ->insert($value);
         if ($res) {
@@ -96,7 +85,7 @@ class AdContentController extends Controller
             [
                 'id' => 'required|integer',
                 'aid' => 'required|integer',
-                'img'=> 'required',
+                'img' => 'required',
                 'isTarget' => 'boolean',
             ],
             [
@@ -108,19 +97,8 @@ class AdContentController extends Controller
                 'isTarget.boolean' => '参数错误',
             ]
         );
-        $id = $request->id;
-        $img = $request->img;
-        $aid = $request->aid;
-        $title = $request->title;
-        $url = $request->url;
-        $isTarget = $request->isTarget;
-        $value = [
-            'img' => $img,
-            'aid' => $aid,
-            'title' => $title,
-            'url' => $url,
-            'isTarget' => $isTarget,
-        ];
+        $id = request('id');
+        $value = request(['img', 'aid', 'title', 'url', 'isTarget']);
         $res = DB::table('ad_content')
             ->where('id', $id)
             ->update($value);
