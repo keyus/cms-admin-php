@@ -61,14 +61,7 @@ class AdController extends Controller
                 'show.boolean' => '显示属性错误',
             ]
         );
-        $name = $request->name;
-        $show = $request->show;
-        $note = $request->note;
-        $value = [
-            'name' => $name,
-            'show' => $show,
-            'note' => $note,
-        ];
+        $value = request(['name', 'show', 'note',]);
         $res = DB::table('ad')
             ->insert($value);
         if ($res) {
@@ -96,14 +89,7 @@ class AdController extends Controller
             ]
         );
         $id = $request->id;
-        $name = $request->name;
-        $show = $request->show;
-        $note = $request->note;
-        $value = [
-            'name' => $name,
-            'show' => $show,
-            'note' => $note,
-        ];
+        $value = request(['name', 'show', 'note',]);
         $res = DB::table('ad')
             ->where('id', $id)
             ->update($value);

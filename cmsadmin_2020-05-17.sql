@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 8.0.19)
 # Database: cmsadmin
-# Generation Time: 2020-05-03 04:09:22 +0000
+# Generation Time: 2020-05-17 11:27:33 +0000
 # ************************************************************
 
 
@@ -43,7 +43,7 @@ LOCK TABLES `ad` WRITE;
 INSERT INTO `ad` (`id`, `name`, `show`, `note`, `createTime`, `updateTime`)
 VALUES
 	(2,'222',1,'111','2020-04-29 09:23:01',NULL),
-	(4,'333',0,NULL,'2020-04-29 09:25:26',NULL);
+	(4,'333',0,'3232','2020-04-29 09:25:26',NULL);
 
 /*!40000 ALTER TABLE `ad` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -84,13 +84,15 @@ DROP TABLE IF EXISTS `admin`;
 CREATE TABLE `admin` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '用户名 唯一值',
-  `password` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '密码',
+  `password` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '密码',
   `name` varchar(20) DEFAULT NULL COMMENT '姓名',
   `phone` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '手机号',
   `role` tinyint NOT NULL DEFAULT '0' COMMENT '0 普通管理  1超级管理',
   `lastLoginTime` datetime DEFAULT NULL COMMENT '最后登陆时间',
   `createTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updateTime` datetime DEFAULT NULL COMMENT '更新时间',
+  `api_token` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `remember_token` varchar(60) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='管理员';
@@ -98,11 +100,11 @@ CREATE TABLE `admin` (
 LOCK TABLES `admin` WRITE;
 /*!40000 ALTER TABLE `admin` DISABLE KEYS */;
 
-INSERT INTO `admin` (`id`, `username`, `password`, `name`, `phone`, `role`, `lastLoginTime`, `createTime`, `updateTime`)
+INSERT INTO `admin` (`id`, `username`, `password`, `name`, `phone`, `role`, `lastLoginTime`, `createTime`, `updateTime`, `api_token`, `remember_token`)
 VALUES
-	(1,'www','hkwooo','111s',NULL,1,NULL,'2020-04-19 16:08:34','2020-04-29 02:15:16'),
-	(2,'tests','666666','11','33',0,NULL,'2020-04-23 10:15:32','2020-05-01 13:04:13'),
-	(3,'test1','111111','fds','fds',0,NULL,'2020-04-23 12:29:20',NULL);
+	(1,'www','$2y$10$QlIdbBlChzdDHyXiyJZFOeVEVZl.pI6g6kwE3zzhZtOhlNW40vxsG','111s',NULL,1,NULL,'2020-04-19 16:08:34','2020-04-29 02:15:16','123456',NULL),
+	(2,'test','$2y$10$QlIdbBlChzdDHyXiyJZFOeVEVZl.pI6g6kwE3zzhZtOhlNW40vxsG','11','33',0,NULL,'2020-04-23 10:15:32','2020-05-01 13:04:13',NULL,NULL),
+	(3,'test1','111111','fds','fds',0,NULL,'2020-04-23 12:29:20',NULL,NULL,NULL);
 
 /*!40000 ALTER TABLE `admin` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -154,12 +156,9 @@ VALUES
 	(11,'sfdsafd',2,1,NULL,NULL,NULL,107,NULL,NULL,NULL,NULL,0,0,0,0,0,'2020-04-26 10:57:23',NULL),
 	(12,'5353',2,1,NULL,NULL,NULL,119,NULL,NULL,NULL,NULL,0,1,0,0,0,'2020-04-26 10:58:00',NULL),
 	(13,'sfdsafd',2,1,NULL,NULL,NULL,49,NULL,NULL,NULL,NULL,0,0,0,0,0,'2020-04-26 11:01:23',NULL),
-	(14,'54354',1,1,NULL,NULL,NULL,61,NULL,NULL,NULL,NULL,0,0,0,0,0,'2020-04-26 11:01:49',NULL),
-	(15,'5353',4,1,NULL,NULL,NULL,114,NULL,NULL,NULL,NULL,0,0,0,0,0,'2020-04-26 11:02:41',NULL),
 	(16,'16的内容',2,1,'/upload/images/1587890980.jpeg',NULL,'<p>我是16</p>',75,NULL,NULL,NULL,NULL,0,1,0,1,0,'2020-04-26 11:03:01','2020-04-26 08:49:46'),
 	(17,'sfdsafd',3,1,NULL,NULL,NULL,57,NULL,NULL,NULL,NULL,0,0,0,0,0,'2020-04-26 11:03:19',NULL),
 	(18,'643654',4,1,NULL,NULL,NULL,98,NULL,NULL,NULL,NULL,0,0,0,0,0,'2020-04-26 11:03:53',NULL),
-	(19,'4654',2,1,NULL,NULL,NULL,57,NULL,NULL,NULL,NULL,0,0,0,0,0,'2020-04-26 11:05:09',NULL),
 	(20,'5643654',4,1,'/upload/images/1587873993.jpeg','323543','<p>32432432432</p>',87,'3543','43654','654654','233',1,0,0,0,0,'2020-04-26 11:06:23',NULL),
 	(21,'5354',4,1,NULL,NULL,'<p>454364654</p>',84,NULL,NULL,NULL,NULL,0,0,0,0,0,'2020-04-26 11:13:16',NULL),
 	(22,'sfdsafd',4,1,NULL,NULL,'<p>2432</p>',93,NULL,NULL,NULL,NULL,0,0,0,0,0,'2020-04-26 11:14:00',NULL),
@@ -204,7 +203,7 @@ VALUES
 	(1,'关于我们111','kissabc',1,'<p><strong><em>333</em></strong></p><p><strong><em><span class=\"ql-cursor\">﻿</span></em></strong><img src=\"/upload/images/1587961141.jpeg\"></p>',0,501,'/upload/images/1587961126.jpeg','333','222','111','2020-04-23 19:15:33','2020-04-27 04:19:03'),
 	(2,'新闻中心','',0,NULL,1,100,NULL,NULL,NULL,NULL,'2020-04-24 09:45:28',NULL),
 	(3,'原油资讯','',0,NULL,1,50,NULL,NULL,NULL,NULL,'2020-04-25 13:34:26',NULL),
-	(4,'新闻中心1',NULL,0,NULL,1,120,NULL,NULL,NULL,NULL,'2020-04-25 13:34:49','2020-04-28 15:26:11');
+	(4,'新闻中心1',NULL,0,'<p>2</p>',1,120,NULL,NULL,NULL,NULL,'2020-04-25 13:34:49','2020-05-04 01:34:59');
 
 /*!40000 ALTER TABLE `channel` ENABLE KEYS */;
 UNLOCK TABLES;

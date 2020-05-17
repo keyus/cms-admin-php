@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 /**
  * 登陆控制
  */
-class LoginController extends Controller
+class AuthController extends Controller
 {
     public function login(Request $request)
     {
@@ -29,5 +29,11 @@ class LoginController extends Controller
             'token' => $token,
             'user'=> $find,
         ]);
+    }
+    //登出
+    public function logout()
+    {
+        auth()->logout();
+        return response()->json(['message' => '退出成功']);
     }
 }

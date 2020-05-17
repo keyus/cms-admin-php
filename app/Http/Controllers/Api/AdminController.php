@@ -67,10 +67,11 @@ class AdminController extends Controller
         $password = $request->password;
         $name = $request->name;
         $phone = $request->phone;
+        
         $res = DB::table('admin')
             ->insert([
                 'username' => $username,
-                'password' => md5($password),
+                'password' => bcrypt($password),
                 'name' => $name,
                 'phone' => $phone,
             ]);

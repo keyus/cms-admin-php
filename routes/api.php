@@ -6,11 +6,14 @@
 
 /**登陆校验 */
 
-Route::post('login', 'Api\LoginController@login');
+Route::post('auth/login', 'Api\AuthController@login');
 
 Route::middleware(['middleware' => 'auth:api'])
 // Route::middleware([])
     ->group(function () {
+        //登出
+        Route::post('auth/logout', 'Api\AuthController@logout');
+
         //图片上传
         Route::post('image/upload', 'Api\ImageController@upload');
 
