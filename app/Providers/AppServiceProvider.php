@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +25,21 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        View::composer(
+            [
+                'notice',
+                'index',
+            ],
+            function ($view) {
+                //全局导航
+                $nav = DB::table('channel')
+                    ->select('id', 'title', 'name')
+                    ->where('isNav', 1)
+                    ->where('show', 1)
+                    ->orderBy('sort', 'desc')
+                    ->get();
+                $view->with('nav', $nav);
+            }
+        );
     }
 }

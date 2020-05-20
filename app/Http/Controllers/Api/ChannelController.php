@@ -66,23 +66,18 @@ class ChannelController extends Controller
         $request->validate(
             [
                 'title' => 'required|unique:channel',
+                'name' => 'required|unique:channel',
                 'sort' => 'integer',
             ],
             [
                 'title.integer' => '栏目名称错误',
                 'title.unique' => '栏目名称已存在',
                 'sort.integer' => '排序不正确',
+                'name.required' => '英文别名未填写',
+                'name.unique' => '英文别名已经存在',
             ]
         );
-        $title = $request->title;
-        $model = $request->model;
-        $sort = $request->sort;
-        $show = $request->show;
-        $row = [
-            'title' => $title,
-            'model' => $model,
-            'show' => $show,
-        ];
+        $row = request(['title','model','name']);
         if(isset($sort)) $row['sort'] = $sort;
         
         $res = DB::table('channel')
@@ -102,7 +97,7 @@ class ChannelController extends Controller
             [
                 'id' => 'required|integer',
                 'title' => 'required|unique:channel,title,'.$request->id,
-                'name' => 'unique:channel,name,'.$request->id,
+                'name' => 'required|unique:channel,name,'.$request->id,
                 'sort' => 'integer',
             ],
             [
@@ -110,6 +105,7 @@ class ChannelController extends Controller
                 'id.integer' => '参数错误',
                 'title.unique' => '栏目名称已存在',
                 'sort.integer' => '排序不正确',
+                'name.required' => '英文别名未填写',
                 'name.unique' => '英文别名已经存在',
             ]
         );

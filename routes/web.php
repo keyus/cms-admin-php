@@ -11,8 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::get('/', 'Web\IndexController@index');
+Route::get('/channel/{name}', 'Web\ChannelController@index');
 
