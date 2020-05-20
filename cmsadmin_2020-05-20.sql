@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 8.0.19)
 # Database: cmsadmin
-# Generation Time: 2020-05-17 11:27:33 +0000
+# Generation Time: 2020-05-20 13:09:06 +0000
 # ************************************************************
 
 
@@ -43,7 +43,8 @@ LOCK TABLES `ad` WRITE;
 INSERT INTO `ad` (`id`, `name`, `show`, `note`, `createTime`, `updateTime`)
 VALUES
 	(2,'222',1,'111','2020-04-29 09:23:01',NULL),
-	(4,'333',0,'3232','2020-04-29 09:25:26',NULL);
+	(4,'2333',0,'32321','2020-04-29 09:25:26',NULL),
+	(5,'111',1,'432432','2020-05-17 18:29:24',NULL);
 
 /*!40000 ALTER TABLE `ad` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -180,9 +181,12 @@ DROP TABLE IF EXISTS `channel`;
 CREATE TABLE `channel` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(20) DEFAULT NULL COMMENT '栏目标题',
-  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '英文别名 唯一值',
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '英文别名 唯一值 路由名称  /channel/???',
   `model` tinyint NOT NULL DEFAULT '0' COMMENT '栏目模型 0 文章, 1单页, 2下载',
+  `desc` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '栏目描述',
+  `isNav` tinyint NOT NULL DEFAULT '0' COMMENT '是否导航',
   `content` longtext CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '单页模型 内容',
+  `template` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT 'channel' COMMENT '模板名称,默认提供',
   `show` tinyint NOT NULL DEFAULT '1' COMMENT '是否显示',
   `sort` int NOT NULL DEFAULT '50' COMMENT '排序',
   `img` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '栏目封面图',
@@ -192,18 +196,24 @@ CREATE TABLE `channel` (
   `createTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updateTime` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `title` (`title`)
+  UNIQUE KEY `title` (`title`),
+  KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='栏目';
 
 LOCK TABLES `channel` WRITE;
 /*!40000 ALTER TABLE `channel` DISABLE KEYS */;
 
-INSERT INTO `channel` (`id`, `title`, `name`, `model`, `content`, `show`, `sort`, `img`, `seoTitle`, `seoKey`, `seoDesc`, `createTime`, `updateTime`)
+INSERT INTO `channel` (`id`, `title`, `name`, `model`, `desc`, `isNav`, `content`, `template`, `show`, `sort`, `img`, `seoTitle`, `seoKey`, `seoDesc`, `createTime`, `updateTime`)
 VALUES
-	(1,'关于我们111','kissabc',1,'<p><strong><em>333</em></strong></p><p><strong><em><span class=\"ql-cursor\">﻿</span></em></strong><img src=\"/upload/images/1587961141.jpeg\"></p>',0,501,'/upload/images/1587961126.jpeg','333','222','111','2020-04-23 19:15:33','2020-04-27 04:19:03'),
-	(2,'新闻中心','',0,NULL,1,100,NULL,NULL,NULL,NULL,'2020-04-24 09:45:28',NULL),
-	(3,'原油资讯','',0,NULL,1,50,NULL,NULL,NULL,NULL,'2020-04-25 13:34:26',NULL),
-	(4,'新闻中心1',NULL,0,'<p>2</p>',1,120,NULL,NULL,NULL,NULL,'2020-04-25 13:34:49','2020-05-04 01:34:59');
+	(1,'上市品种','product',1,NULL,1,NULL,'',1,50,NULL,NULL,NULL,NULL,'2020-05-19 17:01:23',NULL),
+	(2,'资金与费用','cost',1,NULL,1,NULL,'',1,50,NULL,NULL,NULL,NULL,'2020-05-19 17:02:34',NULL),
+	(3,'市场简介','market',1,NULL,1,NULL,'',1,50,NULL,NULL,NULL,NULL,'2020-05-19 17:03:04',NULL),
+	(4,'行业新闻','news',0,NULL,1,NULL,'',1,50,NULL,NULL,NULL,NULL,'2020-05-19 17:03:39',NULL),
+	(5,'增训中心','train',0,NULL,1,NULL,'',1,50,NULL,NULL,NULL,NULL,'2020-05-19 17:03:56',NULL),
+	(6,'市场公告','market-notice',0,'关于 IX Securities 的各类通知',1,NULL,'notice',1,50,NULL,NULL,NULL,NULL,'2020-05-19 17:04:29',NULL),
+	(7,'下载','download',2,NULL,1,NULL,'',1,50,NULL,NULL,NULL,NULL,'2020-05-19 17:05:10',NULL),
+	(8,'市场研究','report',0,NULL,0,NULL,'',1,50,NULL,NULL,NULL,NULL,'2020-05-19 17:05:41',NULL),
+	(9,'网站公告','notice',0,NULL,0,NULL,'notice',1,50,NULL,NULL,NULL,NULL,'2020-05-19 17:06:35',NULL);
 
 /*!40000 ALTER TABLE `channel` ENABLE KEYS */;
 UNLOCK TABLES;
