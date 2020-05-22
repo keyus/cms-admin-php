@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\DB;
  */
 class ChannelController extends Controller
 {
+    protected $list_model = 0;
+    protected $download_model = 2;
     protected $template = [
         0 => 'list',
         1 => 'detail',
@@ -19,19 +21,38 @@ class ChannelController extends Controller
     ];
     public function index(Request $request, $name)
     {
-        $channel = DB::table('channel')->where('name',$name)->first();
+        $channel = DB::table('channel')->where('name', $name)->first();
         $model = $channel->model;
-        
+
         //确认使用模板
         $template = $this->template[$model];
-        if($channel->template){
+        if ($channel->template) {
             $template = $channel->template;
         }
 
-        
-
-        return view($template,[
+        //模板变量
+        $value = [
             'channel' => $channel,
-        ]);
+        ];
+
+        //处理列表模型
+        if ($model == $this->list_model) {
+            $list = DB::table('article')
+                ->select(
+                    'id', 'title', 'channelId', 'img', 'author', 'readCount', 'linkUrl', 'desc',
+                    'isTop', 'isPush', 'isBold', 'isImg', 'isLink', 'createTime', 'updateTime'
+                )
+                ->where('channelId', $channel->id)
+                ->where('show', 1)
+                ->paginate(15);
+            $value['list'] = $list;
+        }
+
+        //处理下载模型
+        if ($model == $this->download_model) {
+            $download = DB::table('download')->where('channelId', $channel->id)->paginate(15);
+            $value['download'] = $download;
+        }
+        return view($template, $value);
     }
 }

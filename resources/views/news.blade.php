@@ -13,8 +13,8 @@
 @section('body')
 
 <div class="list-title">
-        交易金廊
-    </div>
+    交易金廊
+</div>
 
     <div class="content-wrapper">
         <div class="flex">

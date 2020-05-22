@@ -14,53 +14,22 @@
 <div class="ms-bodys">
         <div class="title-important container">
             <h3>
-                <span>重要通知</span>
+                <span>{{$channel->title}}</span>
             </h3>
         </div>
 
         <ul class="list-notice">
-            <li>
-                <a href="">
-                    <h3>
-                        冬令时转夏令时交易时间调整冬令时转夏令时交易时间调整 <span>2020/03/28</span>
-                    </h3>
-                </a>
-            </li>
-            <li>
-                <a href="">
-                    <h3>
-                        冬令时转夏令时交易时间调整冬令时转夏令时交易时间调整 <span>2020/03/28</span>
-                    </h3>
-                </a>
-            </li>
-            <li>
-                <a href="">
-                    <h3>
-                        冬令时转夏令时交易时间调整冬令时转夏令时交易时间调整 <span>2020/03/28</span>
-                    </h3>
-                </a>
-            </li>
-            <li>
-                <a href="">
-                    <h3>
-                        冬令时转夏令时交易时间调整冬令时转夏令时交易时间调整 <span>2020/03/28</span>
-                    </h3>
-                </a>
-            </li>
-            <li>
-                <a href="">
-                    <h3>
-                        冬令时转夏令时交易时间调整冬令时转夏令时交易时间调整 <span>2020/03/28</span>
-                    </h3>
-                </a>
-            </li>
-            <li>
-                <a href="">
-                    <h3>
-                        冬令时转夏令时交易时间调整冬令时转夏令时交易时间调整 <span>2020/03/28</span>
-                    </h3>
-                </a>
-            </li>
+            @foreach ($list as $it)
+                <li>
+                    <a href="{{url('/news/'.$it->id)}}">
+                        <h3>
+                            {{$it->title}} <span>{{date('Y/m/d',strtotime($it->createTime))}}</span>
+                        </h3>
+                    </a>
+                </li>
+            @endforeach
         </ul>
+
+        {{ $list->links() }}
     </div>
 @endsection

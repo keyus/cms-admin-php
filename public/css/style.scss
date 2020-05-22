@@ -94,6 +94,35 @@ common start
 /*分页*/
 .pagination {
     text-align: center;
+    li {
+        display: inline-block;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        &.disabled{
+            .page-link {
+                background: #999;
+            }
+        }
+        &.active {
+            .page-link {
+                background: #ff4040;
+                font-weight: bold;
+            }
+        }
+        .page-link {
+            background: #606060;
+            color: #fff;
+            border: none;
+            display: inline-block;
+            width: 29px;
+            height: 29px;
+            text-align: center;
+            line-height: 29px;
+            font-size: 16px;
+            padding: 0;
+        }
+    }
     .current {
         background: #ff4040;
         font-weight: bold;
@@ -154,7 +183,7 @@ common start
             font-size: 54px;
             line-height: 1;
         }
-        p {
+        p,div {
             font-size: 18px;
         }
     }
@@ -476,20 +505,19 @@ common start
         font-weight: normal;
         margin-bottom: 15px;
         font-size: 18px;
-        
     }
-    .time{
+    .time {
         padding-bottom: 30px;
         color: #999;
         text-align: right;
-        span{
+        span {
             border-bottom: 1px solid #a1a1a1;
             line-height: 2;
             padding-bottom: 10px;
         }
     }
-    .content{
-        img{
+    .content {
+        img {
             max-width: 100%;
         }
     }
@@ -966,16 +994,16 @@ common end
 }
 
 /*财经日历*/
-.fx-calendar{
+.fx-calendar {
     max-width: 920px;
     margin: 0 auto;
     padding: 0 10px;
     padding-bottom: 150px;
-    .tab{
+    .tab {
         text-align: center;
         margin-bottom: 25px;
         padding: 30px;
-        a{
+        a {
             display: inline-block;
             width: 117px;
             height: 37px;
@@ -987,38 +1015,36 @@ common end
             color: #fff;
             margin: 0 20px;
             font-size: 18px;
-            &.active{
+            &.active {
                 background: #ff4040;
             }
         }
     }
-    .fx-box{
+    .fx-box {
         box-shadow: 0 4px 6px 2px #c9c9c9;
         height: 800px;
     }
-    
 }
 
 /*单页栏目*/
-.ms-channel-spa{
+.ms-channel-spa {
     max-width: 920px;
     margin: 0 auto;
     padding: 0 20px;
-    h1{
-        span{
+    h1 {
+        span {
             border-top: 5px solid #ff4040;
             width: 72px;
             display: block;
             padding-top: 10px;
         }
     }
-    article{
-        img{
-            max-width: 100%!important;
+    article {
+        img {
+            max-width: 100% !important;
         }
     }
 }
-
 
 /*mobile*/
 @media only screen and (max-width: 1024px) {
@@ -1091,8 +1117,8 @@ common end
             }
         }
     }
-    .fx-calendar{
-        .tab{
+    .fx-calendar {
+        .tab {
             margin: 0 10px;
             a {
                 width: 97px;
@@ -1100,7 +1126,6 @@ common end
             }
         }
     }
-    
 }
 
 /**

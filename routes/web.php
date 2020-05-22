@@ -13,5 +13,5 @@
 
 Route::get('/', 'Web\IndexController@index');
 Route::get('/channel/{name}', 'Web\ChannelController@index');
-Route::get('/article/{id}', 'Web\ChannelController@index');
+Route::get('/news/{id}', 'Web\NewsController@index');
 

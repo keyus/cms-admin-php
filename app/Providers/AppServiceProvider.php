@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-
+use Illuminate\Support\Facades\Blade;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -25,15 +25,23 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Blade::directive('datetime', function ($expression) {
+            // list($date,$format) = explode(', ', $expression);
+            dd(($expression));
+            if(!$format) $format = 'Y-M-D H:i';
+            return "<?php echo date($format,$expression) ?>";
+        });
+       
+
         View::composer(
             [
                 'notice',
-                'notice.content',
+                'notice-content',
                 'index',
                 'calendar',
                 'list',
                 'detail',
-                'article',
+                'news',
                 'download',
             ],
             function ($view) {
