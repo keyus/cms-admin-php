@@ -28,7 +28,13 @@ class AppServiceProvider extends ServiceProvider
         View::composer(
             [
                 'notice',
+                'notice.content',
                 'index',
+                'calendar',
+                'list',
+                'detail',
+                'article',
+                'download',
             ],
             function ($view) {
                 //全局导航

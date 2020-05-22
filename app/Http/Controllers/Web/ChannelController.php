@@ -13,17 +13,22 @@ use Illuminate\Support\Facades\DB;
 class ChannelController extends Controller
 {
     protected $template = [
-        0 => 'channel',
-        1 => 'single',
+        0 => 'list',
+        1 => 'detail',
         2 => 'download',
     ];
     public function index(Request $request, $name)
     {
         $channel = DB::table('channel')->where('name',$name)->first();
-        $template = $this->template[$channel->model];
+        $model = $channel->model;
+        
+        //确认使用模板
+        $template = $this->template[$model];
         if($channel->template){
             $template = $channel->template;
         }
+
+        
 
         return view($template,[
             'channel' => $channel,

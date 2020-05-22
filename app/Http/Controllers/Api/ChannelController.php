@@ -11,11 +11,20 @@ class ChannelController extends Controller
     /**
      * 栏目列表
      */
-    function list() {
-        return DB::table('channel')
-            ->select('id', 'title', 'model', 'show', 'sort')
-            ->orderBy('createTime','desc')
-            ->get();
+    function list(Request $request) {
+        $request->validate([
+            'model' => 'nullable|integer',
+        ], [
+            'model.in' => '参数错误',
+        ]);
+        $model = $request->model;
+        $res = DB::table('channel')
+            ->select('id', 'title', 'name', 'model', 'show', 'isNav', 'sort')
+            ->orderBy('createTime', 'desc');
+        if ($model) {
+            $res->where('model', $model);
+        }
+        return $res->get();
     }
 
     /**
@@ -30,6 +39,17 @@ class ChannelController extends Controller
             'id.integer' => '参数错误',
         ]);
         $id = $request->id;
+
+        $find = DB::table('channel')
+            ->where('id', $id)
+            ->first();
+        if ($find->file) {
+            try {
+                @unlink(public_path($find->img));
+            } catch (ErrorException $e) {
+            }
+        }
+
         $res = DB::table('channel')
             ->where('id', $id)
             ->first();
@@ -77,9 +97,11 @@ class ChannelController extends Controller
                 'name.unique' => '英文别名已经存在',
             ]
         );
-        $row = request(['title','model','name']);
-        if(isset($sort)) $row['sort'] = $sort;
-        
+        $row = request(['title', 'model', 'name']);
+        if (isset($sort)) {
+            $row['sort'] = $sort;
+        }
+
         $res = DB::table('channel')
             ->insert($row);
         if ($res) {
@@ -96,8 +118,10 @@ class ChannelController extends Controller
         $request->validate(
             [
                 'id' => 'required|integer',
-                'title' => 'required|unique:channel,title,'.$request->id,
-                'name' => 'required|unique:channel,name,'.$request->id,
+                'title' => 'required|unique:channel,title,' . $request->id,
+                'name' => 'required|unique:channel,name,' . $request->id,
+                'template' => 'nullable|regex:/^[a-zA-Z][a-zA-Z0-9]{0,49}$/i',
+                'aritcleTemplate' => 'nullable|regex:/^[a-zA-Z][a-zA-Z0-9]{0,49}$/i',
                 'sort' => 'integer',
             ],
             [
@@ -107,35 +131,20 @@ class ChannelController extends Controller
                 'sort.integer' => '排序不正确',
                 'name.required' => '英文别名未填写',
                 'name.unique' => '英文别名已经存在',
+                'template.regex' => '模板名称格式错误',
+                'aritcleTemplate.regex' => '栏目内容模板名称格式错误',
             ]
         );
         $id = $request->id;
-        $title = $request->title;
-        $model = $request->model;
         $sort = $request->sort;
-        $show = $request->show;
-
-        $name = $request->name;
-        $img = $request->img;
-        $seoTitle = $request->seoTitle;
-        $seoKey = $request->seoKey;
-        $seoDesc = $request->seoDesc;
-
-        $content = $request->content;
-
-        $row = [
-            'title' => $title,
-            'model' => $model,
-            'show' => $show,
-            'img' => $img,
-            'name' => $name,
-            'seoTitle' => $seoTitle,
-            'seoKey' => $seoKey,
-            'seoDesc' => $seoDesc,
-            'content' => $content,
-            'updateTime' => date('y-m-d H:i:s'),
-        ];
-        if(isset($sort)) $row['sort'] = $sort;
+        $row = request([
+            'title', 'model', 'show', 'isNav', 'img', 'name', 'seoTitle', 'seoKey', 'seoDesc',
+            'content', 'template', 'aritcleTemplate',
+        ]);
+        $row['updateTime'] = date('y-m-d H:i:s');
+        if (isset($sort)) {
+            $row['sort'] = $sort;
+        }
 
         $res = DB::table('channel')
             ->where('id', $id)

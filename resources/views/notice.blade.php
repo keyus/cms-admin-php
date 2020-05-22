@@ -1,10 +1,5 @@
 @extends('layout.app')
 
-@section('css')
-<!-- <link rel="stylesheet" href="/css/index.css"> -->
-@endsection
-
-
 @section('banner')
 <div class="ms-slider ms-second-banner" style="background-image: url('/img/banner2.jpg');">
     <div class="container">
@@ -16,7 +11,6 @@
 
 
 @section('body')
-
 <div class="ms-bodys">
         <div class="title-important container">
             <h3>
@@ -24,7 +18,7 @@
             </h3>
         </div>
 
-        <ul class="list-important">
+        <ul class="list-notice">
             <li>
                 <a href="">
                     <h3>

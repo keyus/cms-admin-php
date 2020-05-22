@@ -7,6 +7,7 @@
     <meta name="theme-color" content="#000000" />
     <title>首页</title>
     <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/style.css">
     @yield('css')
 </head>
 
@@ -49,6 +50,8 @@
             </div>
         </div>
     </footer>
+
+    @yield('script')
 </body>
 
 </html>

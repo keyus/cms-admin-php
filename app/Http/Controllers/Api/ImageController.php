@@ -4,17 +4,18 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class ImageController extends Controller
 {
     /**
      * 上传图片
+     * 默认存放    /upload/images/$year
+     * path ?     /upload/images/$path/$year
      */
     public function upload(Request $request)
     {
         $request->validate([
-            'path' => 'regex:/^[a-z-0-9]{1,20}$/i',      //图片存放目录名称 6-20位
+            'path' => 'regex:/^[a-z-0-9]{1,50}$/i', //图片存放目录名称 6-50位
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ], [
             'image.required' => '参数错误',
@@ -24,9 +25,18 @@ class ImageController extends Controller
             'path.regex' => '参数错误',
         ]);
         $image = $request->file('image');
+        $path = $request->path;
+        $year = date('Y');
         $file = time() . '.' . $image->getClientOriginalExtension();
-        $path = public_path('/upload/images');
-        $image->move($path, $file);
-        return response()->json(['data'=> '/upload/images/'.$file]);
+
+        $dir = public_path('/upload/images/' . $year);
+        $url = '/upload/images/' . $year . '/' . $file;
+        if ($path) {
+            $dir = public_path('/upload/images/' . $path . '/' . $year);
+            $url = '/upload/images/' . $path . '/' . $year . '/' . $file;
+        }
+
+        $image->move($dir, $file);
+        return response()->json(['data' => $url]);
     }
 }

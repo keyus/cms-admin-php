@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 8.0.19)
 # Database: cmsadmin
-# Generation Time: 2020-05-20 13:09:06 +0000
+# Generation Time: 2020-05-22 11:09:12 +0000
 # ************************************************************
 
 
@@ -186,7 +186,8 @@ CREATE TABLE `channel` (
   `desc` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '栏目描述',
   `isNav` tinyint NOT NULL DEFAULT '0' COMMENT '是否导航',
   `content` longtext CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '单页模型 内容',
-  `template` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT 'channel' COMMENT '模板名称,默认提供',
+  `template` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '模板名称,默认提供',
+  `aritcleTemplate` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '所属栏目文章模板',
   `show` tinyint NOT NULL DEFAULT '1' COMMENT '是否显示',
   `sort` int NOT NULL DEFAULT '50' COMMENT '排序',
   `img` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '栏目封面图',
@@ -203,19 +204,55 @@ CREATE TABLE `channel` (
 LOCK TABLES `channel` WRITE;
 /*!40000 ALTER TABLE `channel` DISABLE KEYS */;
 
-INSERT INTO `channel` (`id`, `title`, `name`, `model`, `desc`, `isNav`, `content`, `template`, `show`, `sort`, `img`, `seoTitle`, `seoKey`, `seoDesc`, `createTime`, `updateTime`)
+INSERT INTO `channel` (`id`, `title`, `name`, `model`, `desc`, `isNav`, `content`, `template`, `aritcleTemplate`, `show`, `sort`, `img`, `seoTitle`, `seoKey`, `seoDesc`, `createTime`, `updateTime`)
 VALUES
-	(1,'上市品种','product',1,NULL,1,NULL,'',1,50,NULL,NULL,NULL,NULL,'2020-05-19 17:01:23',NULL),
-	(2,'资金与费用','cost',1,NULL,1,NULL,'',1,50,NULL,NULL,NULL,NULL,'2020-05-19 17:02:34',NULL),
-	(3,'市场简介','market',1,NULL,1,NULL,'',1,50,NULL,NULL,NULL,NULL,'2020-05-19 17:03:04',NULL),
-	(4,'行业新闻','news',0,NULL,1,NULL,'',1,50,NULL,NULL,NULL,NULL,'2020-05-19 17:03:39',NULL),
-	(5,'增训中心','train',0,NULL,1,NULL,'',1,50,NULL,NULL,NULL,NULL,'2020-05-19 17:03:56',NULL),
-	(6,'市场公告','market-notice',0,'关于 IX Securities 的各类通知',1,NULL,'notice',1,50,NULL,NULL,NULL,NULL,'2020-05-19 17:04:29',NULL),
-	(7,'下载','download',2,NULL,1,NULL,'',1,50,NULL,NULL,NULL,NULL,'2020-05-19 17:05:10',NULL),
-	(8,'市场研究','report',0,NULL,0,NULL,'',1,50,NULL,NULL,NULL,NULL,'2020-05-19 17:05:41',NULL),
-	(9,'网站公告','notice',0,NULL,0,NULL,'notice',1,50,NULL,NULL,NULL,NULL,'2020-05-19 17:06:35',NULL);
+	(1,'上市品种','product',1,NULL,1,NULL,NULL,NULL,1,50,NULL,NULL,NULL,NULL,'2020-05-19 17:01:23',NULL),
+	(2,'资金与费用','cost',1,NULL,1,NULL,NULL,NULL,1,50,NULL,NULL,NULL,NULL,'2020-05-19 17:02:34',NULL),
+	(3,'市场简介','market',1,NULL,1,NULL,NULL,NULL,1,50,NULL,NULL,NULL,NULL,'2020-05-19 17:03:04',NULL),
+	(4,'行业新闻','news',0,NULL,1,NULL,NULL,NULL,1,50,NULL,NULL,NULL,NULL,'2020-05-19 17:03:39',NULL),
+	(5,'增训中心','train',0,NULL,1,NULL,NULL,NULL,1,50,NULL,NULL,NULL,NULL,'2020-05-19 17:03:56',NULL),
+	(6,'市场公告','market-notice',0,'关于 IX Securities 的各类通知',1,NULL,'notice',NULL,1,50,NULL,NULL,NULL,NULL,'2020-05-19 17:04:29','2020-05-21 13:52:10'),
+	(7,'下载','download',2,NULL,1,NULL,NULL,NULL,1,50,NULL,NULL,NULL,NULL,'2020-05-19 17:05:10','2020-05-21 14:07:19'),
+	(8,'市场研究','report',0,NULL,0,NULL,NULL,NULL,1,50,NULL,NULL,NULL,NULL,'2020-05-19 17:05:41',NULL),
+	(9,'网站公告','notice',0,NULL,0,NULL,'notice',NULL,1,50,NULL,NULL,NULL,NULL,'2020-05-19 17:06:35','2020-05-21 14:16:38'),
+	(10,'财经日历','calendar',1,'全球最新财经大事件的实时通道',0,NULL,'calendar',NULL,1,50,NULL,NULL,NULL,NULL,'2020-05-21 14:42:34','2020-05-21 13:44:25');
 
 /*!40000 ALTER TABLE `channel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table download
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `download`;
+
+CREATE TABLE `download` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `channelId` int DEFAULT NULL COMMENT '栏目id',
+  `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '下载名称',
+  `img` varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '图片标识',
+  `filename` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '文件名',
+  `size` bigint DEFAULT NULL COMMENT '文件大小',
+  `ext` varchar(50) DEFAULT NULL COMMENT '文件类型',
+  `file` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '文件地址',
+  `desc` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '下载描述',
+  `createTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '上传时间',
+  `updateTime` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`),
+  KEY `channelId` (`channelId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `download` WRITE;
+/*!40000 ALTER TABLE `download` DISABLE KEYS */;
+
+INSERT INTO `download` (`id`, `channelId`, `name`, `img`, `filename`, `size`, `ext`, `file`, `desc`, `createTime`, `updateTime`)
+VALUES
+	(1,NULL,'pc软件下载',NULL,NULL,2432432,'jpe',NULL,'fkdsfdsfds','2020-05-22 13:13:29',NULL),
+	(2,NULL,'2432',NULL,NULL,NULL,NULL,NULL,NULL,'2020-05-22 14:39:07',NULL),
+	(3,7,'535',NULL,'service-worker.js',1181,'js','/upload/download/1590134192.js',NULL,'2020-05-22 14:56:32',NULL);
+
+/*!40000 ALTER TABLE `download` ENABLE KEYS */;
 UNLOCK TABLES;
 
 

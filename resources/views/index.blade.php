@@ -1,10 +1,5 @@
 @extends('layout.app')
 
-@section('css')
-<link rel="stylesheet" href="/css/index.css">
-@endsection
-
-
 @section('banner')
 <div class="ms-slider">
     <div class="ms-slider-item" style="background-image: url('./img/banner2.jpg');">

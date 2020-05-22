@@ -86,4 +86,10 @@ Route::middleware(['middleware' => 'auth:api'])
         //站点基本信息
         Route::post('site', 'Api\SiteController@list');
         Route::post('site/edit', 'Api\SiteController@edit');
+
+         //下载管理
+         Route::post('download', 'Api\DownloadController@list');
+         Route::post('download/delete', 'Api\DownloadController@delete');
+         Route::post('download/add', 'Api\DownloadController@add');
+         Route::post('download/edit', 'Api\DownloadController@edit');
     });
