@@ -16,19 +16,61 @@ class NewsController extends Controller
     {
         $article = DB::table('article')->where('id', $id)->first();
         $template = $this->template;
+        $channel = null;
+
         if ($article) {
-            $channel = DB::table('channel')
-                ->select('id', 'title', 'name', 'desc', 'aritcleTemplate')
-                ->where('id', $article->channelId)->first();
-                
-            if ($channel->aritcleTemplate) {
-                $template = $channel->aritcleTemplate;
+
+            //查找栏目
+            if ($article->channelId) {
+
+                $channel = DB::table('channel')
+                    ->select('id', 'title', 'name', 'desc', 'aritcleTemplate')
+                    ->find($article->channelId);
+
+                if ($channel->aritcleTemplate) {
+                    $template = $channel->aritcleTemplate;
+                }
             }
-            // dd($template);
-            return view($template, [
+
+            //上一篇  如果查找到文章栏目， 关联文章栏目 id
+            $pre = DB::table('article')
+                ->select('id', 'title', 'img', 'createTime')
+                ->where('id', '<', $id)
+                ->where('show', 1);
+            if ($channel) {
+                $pre->where('channelId', $channel->id);
+            }
+            $pre = $pre->orderBy('id', 'desc')->first();
+
+            //下一篇 如果查找到文章栏目， 关联文章栏目 id
+            $next = DB::table('article')
+                ->select('id', 'title', 'img', 'createTime')
+                ->where('id', '>', $id)
+                ->where('show', 1);
+            if ($channel) {
+                $next->where('channelId', $channel->id);
+            }
+            $next = $next->orderBy('id')->first();
+
+            //最新内容 10条
+            $list = DB::table('article')
+                ->select('id', 'title', 'img', 'createTime')
+                ->where('id', '<>', $id)
+                ->where('show', 1)
+                ->orderBy('createTime', 'desc')
+                ->limit(10)
+                ->get();
+
+            $values = [
                 'article' => $article,
                 'channel' => $channel,
-            ]);
+                'pre' => $pre,
+                'next' => $next,
+                'list' => $list,
+            ];
+
+            // dd($template);
+            return view($template, $values);
         }
 
     }

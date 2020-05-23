@@ -1,8 +1,10 @@
 @extends('layout.app')
 
 @section('banner')
+<!-- style="background-image: url('./img/banner2.jpg');" -->
 <div class="ms-slider">
-    <div class="ms-slider-item" style="background-image: url('./img/banner2.jpg');">
+    <div class="ms-slider-item"
+        style="background-image: url('@if($banner) {{$banner->img}} @else /img/banner2.jpg  @endif')">
         <span class="banner-title"><img src='./img/banner-title.png' alt="" /></span>
         <span class="banner-button">
             <a href="">会员在线开户</a>
@@ -24,70 +26,39 @@
     </div>
 </div>
 
+@if($ad)
 <div class="ms-ad">
     <div class="container ad-block">
-        <a href=""><img src="./img/test4.png" alt=""></a>
-        <a href=""><img src="./img/test4.png" alt=""></a>
-        <a href=""><img src="./img/test4.png" alt=""></a>
-        <a href=""><img src="./img/test4.png" alt=""></a>
+        @foreach($ad as $it)
+            <a href="@if($it->url){{$it->url}}@else javascript:; @endif">
+                <img src="{{$it->img}}" alt="{{$it->title}}">
+            </a>
+        @endforeach
     </div>
 </div>
+@endif
 
 <div class="container ms-notice-container">
     <div class="ms-notice">
         <h3>
-            <strong>交易商公告</strong>
-            <a href="">更多</a>
+            <strong>{{$notice_channel->title}}</strong>
+            <a href="{{url('/channel/'.$notice_channel->name)}}">更多</a>
         </h3>
         <ul>
-            <li>
-                <a href="">
-                    <span class="time">
-                        <i>2</i>
-                        2018-03
-                    </span>
-                    <div>
-                        <h6>大宗商品交易市场符合国家宏观政策 顺应社会发展需求</h6>
-                        <p>大宗商品交易行业在中国已发展数年，而从行业诞生至今</p>
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="">
-                    <span class="time">
-                        <i>2</i>
-                        2018-03
-                    </span>
-                    <div>
-                        <h6>大宗商品交易市场符合国家宏观政策 顺应社会发展需求</h6>
-                        <p>大宗商品交易行业在中国已发展数年，而从行业诞生至今</p>
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="">
-                    <span class="time">
-                        <i>2</i>
-                        2018-03
-                    </span>
-                    <div>
-                        <h6>大宗商品交易市场符合国家宏观政策 顺应社会发展需求</h6>
-                        <p>大宗商品交易行业在中国已发展数年，而从行业诞生至今</p>
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="">
-                    <span class="time">
-                        <i>2</i>
-                        2018-03
-                    </span>
-                    <div>
-                        <h6>大宗商品交易市场符合国家宏观政策 顺应社会发展需求</h6>
-                        <p>大宗商品交易行业在中国已发展数年，而从行业诞生至今</p>
-                    </div>
-                </a>
-            </li>
+            @foreach($notice as $it)
+                <li>
+                    <a href="{{url('/news/'.$it->id)}}">
+                        <span class="time">
+                            <i> {{date('d',strtotime($it->createTime))}}</i>
+                            {{date('Y-m',strtotime($it->createTime))}}
+                        </span>
+                        <div>
+                            <h6>{{$it->title}}</h6>
+                            <p>{{$it->desc}}</p>
+                        </div>
+                    </a>
+                </li>
+            @endforeach
         </ul>
     </div>
     <div class="ms-desc">

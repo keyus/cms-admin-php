@@ -2,6 +2,10 @@
 /*
 common start
 */
+.header-space {
+  height: 60px;
+}
+
 .container {
   max-width: 1160px;
   margin: 0 auto;
@@ -506,6 +510,10 @@ common start
   max-width: 100% !important;
 }
 
+.content-default .newer {
+  padding-top: 15px;
+}
+
 .content-default .newer p {
   margin-bottom: 0;
   font-size: 16px;
@@ -515,6 +523,10 @@ common start
 
 .content-default .newer p a {
   color: #666;
+}
+
+.content-default .newer p span {
+  color: #aaa;
 }
 
 /**软件下载列表*/

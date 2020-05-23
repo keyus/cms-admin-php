@@ -39,17 +39,6 @@ class ChannelController extends Controller
             'id.integer' => '参数错误',
         ]);
         $id = $request->id;
-
-        $find = DB::table('channel')
-            ->where('id', $id)
-            ->first();
-        if ($find->file) {
-            try {
-                @unlink(public_path($find->img));
-            } catch (ErrorException $e) {
-            }
-        }
-
         $res = DB::table('channel')
             ->where('id', $id)
             ->first();
@@ -69,6 +58,17 @@ class ChannelController extends Controller
         ]);
 
         $id = $request->id;
+
+        $find = DB::table('channel')
+            ->where('id', $id)
+            ->first();
+        if ($find->file) {
+            try {
+                @unlink(public_path($find->img));
+            } catch (ErrorException $e) {
+            }
+        }
+
         $res = DB::table('channel')
             ->where('id', $id)
             ->delete();

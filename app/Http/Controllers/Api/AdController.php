@@ -15,8 +15,21 @@ class AdController extends Controller
      * 列表读取
      */
     function list(Request $request) {
+        $request->validate(
+            [
+                 'all' => 'boolean',
+            ],
+            [
+                'all.boolean' => '参数错误',
+            ]
+        );
         $name = $request->name;
+        $all = $request->all;
         $ad = DB::table('ad');
+
+        if($all){
+            return $ad->orderBy('createTime','desc')->get();
+        }
         if ($name) {
             $ad->where('name', $name);
         }

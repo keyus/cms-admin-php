@@ -92,4 +92,11 @@ Route::middleware(['middleware' => 'auth:api'])
          Route::post('download/delete', 'Api\DownloadController@delete');
          Route::post('download/add', 'Api\DownloadController@add');
          Route::post('download/edit', 'Api\DownloadController@edit');
+
+         //首页配置
+         Route::post('config/index', 'Api\ConfigIndexController@index');
+         Route::post('config/index/edit', 'Api\ConfigIndexController@edit');
+         //内容页配置
+         Route::post('config/content', 'Api\ConfigContentController@index');
+         Route::post('config/content/edit', 'Api\ConfigContentController@edit');
     });

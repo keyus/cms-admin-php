@@ -25,14 +25,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Blade::directive('datetime', function ($expression) {
-            // list($date,$format) = explode(', ', $expression);
-            dd(($expression));
-            if(!$format) $format = 'Y-M-D H:i';
-            return "<?php echo date($format,$expression) ?>";
-        });
-       
-
         View::composer(
             [
                 'notice',
@@ -44,6 +36,7 @@ class AppServiceProvider extends ServiceProvider
                 'news',
                 'download',
             ],
+            
             function ($view) {
                 //全局导航
                 $nav = DB::table('channel')
@@ -52,7 +45,9 @@ class AppServiceProvider extends ServiceProvider
                     ->where('show', 1)
                     ->orderBy('sort', 'desc')
                     ->get();
+                $site = DB::table('site')->find(1);
                 $view->with('nav', $nav);
+                $view->with('site', $site);
             }
         );
     }

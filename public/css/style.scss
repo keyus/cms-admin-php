@@ -1,6 +1,9 @@
 /*
 common start
 */
+.header-space{
+    height: 60px;
+}
 .container {
     max-width: 1160px;
     margin: 0 auto;
@@ -426,6 +429,7 @@ common start
         }
     }
     .newer {
+        padding-top: 15px;
         p {
             margin-bottom: 0;
             font-size: 16px;
@@ -433,6 +437,9 @@ common start
             line-height: 28px;
             a {
                 color: #666;
+            }
+            span{
+                color: #aaa;
             }
         }
     }
