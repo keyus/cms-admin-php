@@ -24,7 +24,7 @@ class NewsController extends Controller
             if ($article->channelId) {
 
                 $channel = DB::table('channel')
-                    ->select('id', 'title', 'name', 'desc', 'aritcleTemplate')
+                    ->select('id', 'title', 'name', 'desc', 'banner', 'aritcleTemplate')
                     ->find($article->channelId);
 
                 if ($channel->aritcleTemplate) {

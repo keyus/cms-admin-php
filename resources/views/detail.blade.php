@@ -1,7 +1,7 @@
 @extends('layout.app')
 
 @section('banner')
-<div class="ms-slider ms-second-banner" style="background-image: url('/img/banner2.jpg');">
+<div class="ms-slider ms-second-banner" style="background-image: url('@if($channel->banner) {{$channel->banner}} @else /img/banner/detail_banner.jpg @endif');">
     <div class="container">
         <h1>{{$channel->title}}</h1>
         <div>

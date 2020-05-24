@@ -2,7 +2,7 @@
 
 @section('banner')
 @if($channel)
-<div class="ms-slider ms-second-banner" style="background-image: url('/img/banner2.jpg');">
+<div class="ms-slider ms-second-banner" style="background-image: url('@if($channel->banner) {{$channel->banner}} @else /img/banner/list_banner.jpg @endif');">
     <div class="container">
         <h1>{{$channel->title}}</h1>
         <p>{{$channel->desc}}</p>
@@ -20,7 +20,7 @@
             <div class="content-default">
                 <div class="link-list">
                     @if($channel)
-                    <a href="{{url('/channel/'.$channel->name)}}">&lt; 返回列表</a>
+                    <a href="{{url('channel/'.$channel->name)}}">&lt; 返回列表</a>
                     @else
                     <a href="{{url('/')}}">&lt; 返回首页</a>
                     @endif
@@ -36,14 +36,14 @@
                     <p>
                         上一篇:
                         @if($pre)
-                            <a href="{{url('/news/'.$pre->id)}}">{{$pre->title}}</a>
+                            <a href="{{url('news/'.$pre->id)}}">{{$pre->title}}</a>
                         @else
                             <span>没有了</span>
                         @endif
                     </p>
                     <p>下一篇:
                         @if($next)
-                            <a href="{{url('/news/'.$next->id)}}">{{$next->title}}</a>
+                            <a href="{{url('news/'.$next->id)}}">{{$next->title}}</a>
                         @else
                             <span>没有了</span>
                         @endif
@@ -53,7 +53,7 @@
             <div class="content-right">
 
                 <div class="www-push">
-                    <a href="{{url('/channel/calendar')}}">
+                    <a href="{{url('channel/calendar')}}">
                         <img src="/img/icon/icon-data.svg" />
                         财经日历
                     </a>
@@ -72,7 +72,7 @@
                 <ul>
                     @foreach($list as $it)
                         <li>
-                            <a href="{{url('/news/'.$it->id)}}">
+                            <a href="{{url('news/'.$it->id)}}">
                                 <span>{{ date('m/d', strtotime($it->createTime) ) }}</span>
                                 {{$it->title}}
                             </a>

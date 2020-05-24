@@ -14,8 +14,12 @@ class IndexController extends Controller
         $value = [
             'banner' => null,
             'ad' => null,
-            'notice' => null,
             'notice_channel' => null,
+            'notice' => null,
+            'm1' => 'null',
+            'm1_channel' => 'null',
+            'm2' => 'null',
+            'm_title' => null,
         ];
         //banner
         if ($config->banner) {
@@ -37,12 +41,30 @@ class IndexController extends Controller
                 }
             }
         }
-        //公告位置模块
+        //网站公告模块
         if ($config->notice) {
-            $notice_channel = DB::table('channel')->select('id','title','name')->where('show', 1)->find($config->notice);
-            $notice = DB::table('article')->select('id','title','desc','createTime')->where('show', 1)->where('channelId',$config->notice)->limit(4)->get();
-            $value['notice'] = $notice;
+            $notice_channel = DB::table('channel')->select('id', 'title','name')->where('show', 1)->find($config->notice);
+            $notice = DB::table('article')->select('id', 'title','createTime')->where('show', 1)->where('channelId', $config->notice)->orderBy('createTime','desc')->first();
             $value['notice_channel'] = $notice_channel;
+            $value['notice'] = $notice;
+        }
+        //m1模块
+        if ($config->m1) {
+            $m1_channel = DB::table('channel')->select('id', 'title', 'title_show', 'name')->where('show', 1)->find($config->m1);
+            $m1 = DB::table('article')->select('id', 'title', 'desc', 'createTime')->where('show', 1)->where('channelId', $config->m1)->limit(4)->get();
+            $value['m1'] = $m1;
+            $value['m1_channel'] = $m1_channel;
+        }
+
+        //m2模块
+        if ($config->m2) {
+            $m2 = DB::table('channel')->select('id', 'title', 'title_show', 'name', 'img', 'content_desc')->where('show', 1)->find($config->m2);
+            $value['m2'] = $m2;
+        }
+
+        //标题文本配置
+        if ($config->m_title) {
+            $value['m_title'] = $config->m_title;
         }
 
         // dd($value);

@@ -197,6 +197,8 @@ common start
 .ms-second-banner {
   height: 466px !important;
   position: relative;
+  background-position: center center;
+  background-size: cover;
 }
 
 .ms-second-banner .container {

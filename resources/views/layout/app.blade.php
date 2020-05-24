@@ -19,9 +19,9 @@
                     <a href="{{url('/')}}"><img src="/img/logo.png" alt="logo" /></a>
                 </div>
                 <ul class="ms-menu">
-                    <li><a href="{{url('/')}}" class="active">首页</a></li>
+                    <li><a href="{{url('/')}}" class="{{ request()->is('/') ? 'active' : '' }}">首页</a></li>
                     @foreach ($nav as $it)
-                        <li><a href="{{url('/channel/'.$it->name)}}">{{$it->title}}</a></li>
+                        <li><a href="{{url('channel/'.$it->name)}}" class="{{ request()->is('channel/'.$it->name.'*') ? 'active' : '' }}">{{$it->title}}</a></li>
                     @endforeach
                 </ul>
                 <div class="ms-user">

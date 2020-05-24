@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
  */
 class ChannelController extends Controller
 {
+
     protected $list_model = 0;
     protected $download_model = 2;
     protected $template = [

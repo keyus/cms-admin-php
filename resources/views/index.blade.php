@@ -4,8 +4,8 @@
 <!-- style="background-image: url('./img/banner2.jpg');" -->
 <div class="ms-slider">
     <div class="ms-slider-item"
-        style="background-image: url('@if($banner) {{$banner->img}} @else /img/banner2.jpg  @endif')">
-        <span class="banner-title"><img src='./img/banner-title.png' alt="" /></span>
+        style="background-image: url('@if($banner) {{$banner->img}} @else /img/banner/banner.jpg  @endif')">
+        <span class="banner-title"><img src='/img/banner-title.png' alt="" /></span>
         <span class="banner-button">
             <a href="">会员在线开户</a>
         </span>
@@ -16,15 +16,19 @@
 
 
 @section('body')
+
+@if($notice)
 <div class="ms-net-notice">
     <div class="container">
-        <a href="">
+        <a href="{{url('news/'.$notice->id)}}">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="css-n8k3dy"><path d="M12.867 18.47l5.13-.94L15.517 4l-5.18.95-3.25 3.94-4.85.89.5 2.71-1.97.36.36 1.97 1.97-.36.44 2.42 1.97-.36.79 4.28 1.97-.36-.79-4.28.98-.18 4.41 2.49zm-5.76-4.28l-1.97.36-.58-3.17 3.61-.66 3.25-3.92 2.5-.46 1.76 9.59-2.46.45-4.4-2.51-1.71.32zM22.871 8.792l-2.99.55.362 1.967 2.99-.55-.362-1.967zM19.937 13.183l-1.135 1.647 2.503 1.725 1.135-1.646-2.503-1.726zM19.006 4.052l-1.725 2.503 1.646 1.135 1.726-2.503-1.647-1.135z" fill="currentColor"></path></svg>
-            Binance币安宝上线 Harmony（ONE）定制化定期理财产品 05-18
+            {{$notice->title}}
+            {{date('m-d', strtotime($notice->createTime))}}
         </a>
-        <a href="" class="more">更多&gt;</a>
+        <a href="{{url('channel/'.$notice_channel->name)}}" class="more">更多&gt;</a>
     </div>
 </div>
+@endif
 
 @if($ad)
 <div class="ms-ad">
@@ -41,13 +45,13 @@
 <div class="container ms-notice-container">
     <div class="ms-notice">
         <h3>
-            <strong>{{$notice_channel->title}}</strong>
-            <a href="{{url('/channel/'.$notice_channel->name)}}">更多</a>
+            <strong>@if($m1_channel->title_show) {{$m1_channel->title_show}} @else {{$m1_channel->title}} @endif</strong>
+            <a href="{{url('channel/'.$m1_channel->name)}}">更多</a>
         </h3>
         <ul>
-            @foreach($notice as $it)
+            @foreach($m1 as $it)
                 <li>
-                    <a href="{{url('/news/'.$it->id)}}">
+                    <a href="{{url('news/'.$it->id)}}">
                         <span class="time">
                             <i> {{date('d',strtotime($it->createTime))}}</i>
                             {{date('Y-m',strtotime($it->createTime))}}
@@ -63,15 +67,13 @@
     </div>
     <div class="ms-desc">
         <h3>
-            <strong>交易商平台简介</strong>
-            <a href="">详情</a>
+            <strong>@if($m2->title_show){{$m2->title_show}} @else {{$m2->title}} @endif</strong>
+            <a href="{{url('/channel/'.$m2->name)}}">详情</a>
         </h3>
         <div class="intro">
-            <img src="./img/test3.jpg" alt="">
+            <img src="{{$m2->img}}" alt="">
             <p>
-                深圳腾邦全球商品交易中心，是腾邦集团旗下互联网+新业态+实体经济创新平台，是深圳首家获得政府审批的全球酒类要素交易平台，是广东省重点培育进口商品交易中心。交易中心自创办以来，严格履行平台服务职能，坚持确保交易产品质量、确保交易资金安全、确保交易模式合规、确保现货存管安全的原则。服务实体经济，促进商品流通。
-                腾邦全球商品交易中心创新性地将电商平台S2C+F2C+线下智慧零售相结合，积极响应国家提振实体经济的号召，深化要素分配机制市场化改革，助力国家实体经济转型升级。
-                腾邦全球商品交易中心创新性地将电商平台S2C+F2C+线下智慧零售相结合，积极响应国家提振实体经济的号召，深化要素分配机制市场化改革，助力国家实体经济转型升级。
+                {{$m2->content_desc}}
             </p>
         </div>
     </div>
@@ -82,7 +84,7 @@
     <div class="ms-title">
         <div class="container">
             <span></span>
-            行业动态
+            @if($m_title){{$m_title}} @else 行业动态 @endif
             <span></span>
         </div>
     </div>

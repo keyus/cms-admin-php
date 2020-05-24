@@ -121,8 +121,11 @@ class ChannelController extends Controller
                 'title' => 'required|unique:channel,title,' . $request->id,
                 'name' => 'required|unique:channel,name,' . $request->id,
                 'template' => 'nullable|regex:/^[a-zA-Z][a-zA-Z0-9]{0,49}$/i',
-                'aritcleTemplate' => 'nullable|regex:/^[a-zA-Z][a-zA-Z0-9]{0,49}$/i',
+                'aritcleTemplate' => 'nullable|regex:/^[a-zA-Z][a-zA-Z0-9-_]{0,49}$/i',
                 'sort' => 'integer',
+                'isNav' => 'boolean',
+                'desc' => 'max:100',
+                'content_desc'=> 'max:255',
             ],
             [
                 'id.required' => '参数错误',
@@ -138,8 +141,8 @@ class ChannelController extends Controller
         $id = $request->id;
         $sort = $request->sort;
         $row = request([
-            'title', 'model', 'show', 'isNav', 'img', 'name', 'seoTitle', 'seoKey', 'seoDesc',
-            'content', 'template', 'aritcleTemplate',
+            'title', 'title_show', 'model', 'show', 'isNav', 'desc', 'content_desc', 'img', 'banner', 'name',
+            'seoTitle', 'seoKey', 'seoDesc', 'content', 'template', 'aritcleTemplate',
         ]);
         $row['updateTime'] = date('y-m-d H:i:s');
         if (isset($sort)) {
