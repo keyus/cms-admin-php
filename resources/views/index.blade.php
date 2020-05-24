@@ -111,7 +111,7 @@
                                             @if($article->img)<img src="{{ $article->img }}" alt="{{ $article->title }}">@endif
                                         </span>
                                         <span>
-                                            {{$article->title}}
+                                            <label>{{$article->title}}</label>
                                             <label>{{ date('Y-m-d H:i', strtotime($article->createTime)) }}</label>
                                         </span>
                                     </a>

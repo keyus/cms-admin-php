@@ -1,7 +1,7 @@
 /*
 common start
 */
-.header-space {
+.header-space{
     height: 60px;
 }
 .container {
@@ -102,7 +102,7 @@ common start
         list-style: none;
         margin: 0;
         padding: 0;
-        &.disabled {
+        &.disabled{
             .page-link {
                 background: #999;
             }
@@ -188,8 +188,7 @@ common start
             font-size: 54px;
             line-height: 1;
         }
-        p,
-        div {
+        p,div {
             font-size: 18px;
         }
     }
@@ -441,7 +440,7 @@ common start
             a {
                 color: #666;
             }
-            span {
+            span{
                 color: #aaa;
             }
         }
@@ -834,7 +833,16 @@ common end
                     min-width: 1%;
                     display: flex;
                     flex-direction: column;
-                    overflow: hidden;
+                    label:first-child{
+                        color: #333;
+                        font-size: 14px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        max-height: 42px;
+                        display: -webkit-box;
+                        -webkit-line-clamp: 2;
+                        -webkit-box-orient: vertical;
+                    }
                 }
                 label {
                     color: #999;
