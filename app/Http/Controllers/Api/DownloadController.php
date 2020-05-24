@@ -22,12 +22,13 @@ class DownloadController extends Controller
         $name = $request->name;
         $channelId = $request->channelId;
         $download = DB::table('download')
-            ->select();
+            ->leftJoin('channel', 'download.channelId', '=', 'channel.id')
+            ->select('download.*','channel.title as channelName');
         if ($name) {
-            $download->where('name', 'like', '%' . $name . '%');
+            $download->where('download.name', 'like', '%' . $name . '%');
         }
         if ($channelId) {
-            $download->where('channelId', $channelId);
+            $download->where('download.channelId', $channelId);
         }
         return $download->paginate(15);
     }
