@@ -18,7 +18,7 @@ class LinksController extends Controller
         if ($name) {
             $links->where('name', $name);
         }
-        return $links->orderBy('createTime','desc')->paginate(15);
+        return $links->orderBy('createTime', 'desc')->paginate(15);
     }
 
     /**
@@ -33,6 +33,17 @@ class LinksController extends Controller
             'id.integer' => '参数错误',
         ]);
         $id = $request->id;
+
+        $find = DB::table('links')
+            ->where('id', $id)
+            ->first();
+        if ($find->img) {
+            try {
+                @unlink(public_path($find->img));
+            } catch (ErrorException $e) {
+            }
+        }
+
         $res = DB::table('links')
             ->where('id', $id)
             ->delete();
@@ -70,7 +81,9 @@ class LinksController extends Controller
             'show' => $show,
             'img' => $img,
         ];
-        if(isset($sort)) $row['sort'] = $sort;
+        if (isset($sort)) {
+            $row['sort'] = $sort;
+        }
 
         $res = DB::table('links')
             ->insert($row);
@@ -113,7 +126,9 @@ class LinksController extends Controller
             'img' => $img,
             'updateTime' => date('y-m-d H:i:s'),
         ];
-        if(isset($sort)) $row['sort'] = $sort;
+        if (isset($sort)) {
+            $row['sort'] = $sort;
+        }
 
         $res = DB::table('links')
             ->where('id', $id)

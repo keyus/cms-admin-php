@@ -62,9 +62,17 @@ class ChannelController extends Controller
         $find = DB::table('channel')
             ->where('id', $id)
             ->first();
-        if ($find->file) {
+
+        //删除图片
+        if ($find->img) {
             try {
                 @unlink(public_path($find->img));
+            } catch (ErrorException $e) {
+            }
+        }
+        if ($find->banner) {
+            try {
+                @unlink(public_path($find->banner));
             } catch (ErrorException $e) {
             }
         }
@@ -125,7 +133,7 @@ class ChannelController extends Controller
                 'sort' => 'integer',
                 'isNav' => 'boolean',
                 'desc' => 'max:100',
-                'content_desc'=> 'max:255',
+                'content_desc' => 'max:255',
             ],
             [
                 'id.required' => '参数错误',

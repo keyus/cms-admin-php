@@ -83,7 +83,7 @@ class ArticleController extends Controller
         $find = DB::table('article')
             ->where('id', $id)
             ->first();
-        if ($find->file) {
+        if ($find->img) {
             try {
                 @unlink(public_path($find->img));
             } catch (ErrorException $e) {
