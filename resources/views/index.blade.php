@@ -90,150 +90,38 @@
     </div>
     <div class="ms-news">
         <div class="container">
-            <div class="item">
-                <h5><span>培训中心</span></h5>
-                <ul>
-                    <li class="first">
-                        <a href="">
-                            <span>XM重要通知 :8月银行假期日</span>
-                            <label>2019-06-11 05:01</label>
-                            <img src="./img/test2.jpg" alt="">
-                        </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <span><img src="./img/test.png" alt=""></span>
-                            <span>
-                                MBG Markets – CFD合约到期时间表_2019年6月
-                                <label>2019-06-11 05:01</label>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <span><img src="./img/test.png" alt=""></span>
-                            <span>
-                                MBG Markets – CFD合约到期时间表_2019年6月
-                                <label>2019-06-11 05:01</label>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <span><img src="./img/test.png" alt=""></span>
-                            <span>
-                                MBG Markets – CFD合约到期时间表_2019年6月
-                                <label>2019-06-11 05:01</label>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <span><img src="./img/test.png" alt=""></span>
-                            <span>
-                                MBG Markets – CFD合约到期时间表_2019年6月
-                                <label>2019-06-11 05:01</label>
-                            </span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div class="item item-1">
-                <h5><span>行业新闻</span></h5>
-                <ul>
-                    <li class="first">
-                        <a href="">
-                            <span>XM重要通知 :8月银行假期日</span>
-                            <label>2019-06-11 05:01</label>
-                            <img src="./img/test2.jpg" alt="">
-                        </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <span><img src="./img/test.png" alt=""></span>
-                            <span>
-                                MBG Markets – CFD合约到期时间表_2019年6月
-                                <label>2019-06-11 05:01</label>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <span><img src="./img/test.png" alt=""></span>
-                            <span>
-                                MBG Markets – CFD合约到期时间表_2019年6月
-                                <label>2019-06-11 05:01</label>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <span><img src="./img/test.png" alt=""></span>
-                            <span>
-                                MBG Markets – CFD合约到期时间表_2019年6月
-                                <label>2019-06-11 05:01</label>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <span><img src="./img/test.png" alt=""></span>
-                            <span>
-                                MBG Markets – CFD合约到期时间表_2019年6月
-                                <label>2019-06-11 05:01</label>
-                            </span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div class="item item-2">
-                <h5><span>市场研究</span></h5>
-                <ul>
-                    <li class="first">
-                        <a href="">
-                            <span>XM重要通知 :8月银行假期日</span>
-                            <label>2019-06-11 05:01</label>
-                            <img src="./img/test2.jpg" alt="">
-                        </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <span><img src="./img/test.png" alt=""></span>
-                            <span>
-                                MBG Markets – CFD合约到期时间表_2019年6月
-                                <label>2019-06-11 05:01</label>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <span><img src="./img/test.png" alt=""></span>
-                            <span>
-                                MBG Markets – CFD合约到期时间表_2019年6月
-                                <label>2019-06-11 05:01</label>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <span><img src="./img/test.png" alt=""></span>
-                            <span>
-                                MBG Markets – CFD合约到期时间表_2019年6月
-                                <label>2019-06-11 05:01</label>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <span><img src="./img/test.png" alt=""></span>
-                            <span>
-                                MBG Markets – CFD合约到期时间表_2019年6月
-                                <label>2019-06-11 05:01</label>
-                            </span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            @if($m3)
+                @foreach($m3 as $it)
+                    <div class="item">
+                        <h5><a href="{{url('channel/'.$it->name)}}"><span>{{$it->title}}</span></a></h5>
+                        <ul>
+                            @foreach($it->children as $article)
+                                @if($loop->first)
+                                <li class="first">
+                                    <a href="{{url('news/'.$it->id)}}">
+                                        <span>{{$article->title}}</span>
+                                        <label>{{ date('Y-m-d H:i', strtotime($article->createTime)) }}</label>
+                                        @if($article->img)<img src="{{ $article->img }}" alt="{{ $article->title }}">@endif
+                                    </a>
+                                </li>
+                                @else
+                                <li>
+                                    <a href="{{url('news/'.$it->id)}}">
+                                        <span>
+                                            @if($article->img)<img src="{{ $article->img }}" alt="{{ $article->title }}">@endif
+                                        </span>
+                                        <span>
+                                            {{$article->title}}
+                                            <label>{{ date('Y-m-d H:i', strtotime($article->createTime)) }}</label>
+                                        </span>
+                                    </a>
+                                </li>
+                                @endif
+                            @endforeach
+                        </ul>
+                    </div>
+                @endforeach
+            @endif
         </div>
     </div>
 </div>

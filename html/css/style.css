@@ -220,7 +220,8 @@ common start
   line-height: 1;
 }
 
-.ms-second-banner .container p, .ms-second-banner .container div {
+.ms-second-banner .container p,
+.ms-second-banner .container div {
   font-size: 18px;
 }
 
@@ -895,6 +896,7 @@ common end
   position: relative;
   overflow: hidden;
   width: 100%;
+  background-color: #f2f2f2;
 }
 
 .ms-news li.first a img {
@@ -930,6 +932,7 @@ common end
   width: auto !important;
   text-overflow: ellipsis;
   white-space: nowrap;
+  background-color: transparent !important;
 }
 
 .ms-news li.first a label {
@@ -950,6 +953,7 @@ common end
   overflow: hidden;
   width: 80px;
   height: 60px;
+  background-color: #f2f2f2;
 }
 
 .ms-news li a span:first-child img {
@@ -976,6 +980,7 @@ common end
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  overflow: hidden;
 }
 
 .ms-news li a span label {

@@ -26,15 +26,14 @@ class ConfigIndexController extends Controller
                 'ad' => 'required|integer|max:10',
                 'm1' => 'required|integer|max:10',
                 'm2' => 'required|integer|max:10',
-                'm3' => 'required|integer|max:10',
-                'm4' => 'required|integer|max:10',
-                'm5' => 'required|integer|max:10',
+                'm3' => 'required|regex:/^[0-9]+,[0-9]+,[0-9]+$/i',
             ]
         );
         $row = request([
             'banner', 'notice', 'ad', 'm_title',
-            'm1', 'm2', 'm3', 'm4', 'm5',
+            'm1', 'm2', 'm3',
         ]);
+        $row['updateTime'] = date('Y-m-d H:i:s');
         $res = DB::table('config_index')
             ->where('id', 1)
             ->update($row);

@@ -16,9 +16,10 @@ class IndexController extends Controller
             'ad' => null,
             'notice_channel' => null,
             'notice' => null,
-            'm1' => 'null',
-            'm1_channel' => 'null',
-            'm2' => 'null',
+            'm1' => null,
+            'm1_channel' => null,
+            'm2' => null,
+            'm3' => null,
             'm_title' => null,
         ];
         //banner
@@ -43,12 +44,12 @@ class IndexController extends Controller
         }
         //网站公告模块
         if ($config->notice) {
-            $notice_channel = DB::table('channel')->select('id', 'title','name')->where('show', 1)->find($config->notice);
-            $notice = DB::table('article')->select('id', 'title','createTime')->where('show', 1)->where('channelId', $config->notice)->orderBy('createTime','desc')->first();
+            $notice_channel = DB::table('channel')->select('id', 'title', 'name')->where('show', 1)->find($config->notice);
+            $notice = DB::table('article')->select('id', 'title', 'createTime')->where('show', 1)->where('channelId', $config->notice)->orderBy('createTime', 'desc')->first();
             $value['notice_channel'] = $notice_channel;
             $value['notice'] = $notice;
         }
-        //m1模块
+        //m1模块 
         if ($config->m1) {
             $m1_channel = DB::table('channel')->select('id', 'title', 'title_show', 'name')->where('show', 1)->find($config->m1);
             $m1 = DB::table('article')->select('id', 'title', 'desc', 'createTime')->where('show', 1)->where('channelId', $config->m1)->limit(4)->get();
@@ -67,7 +68,25 @@ class IndexController extends Controller
             $value['m_title'] = $config->m_title;
         }
 
-        // dd($value);
+        //m3，m4,m5模块
+        if ($config->m3) {
+            $m3_array = explode(',', $config->m3);
+            $m3 = DB::table('channel')
+                ->select('id', 'title', 'title_show', 'name')
+                ->where('show', 1)
+                ->whereIn('id', $m3_array)
+                ->get();
+            $first = DB::table('article')->select('id', 'title', 'channelId', 'img', 'createTime')->where('show', 1)->where('channelId', $m3_array[0])->limit(5);
+            $second = DB::table('article')->select('id', 'title', 'channelId', 'img', 'createTime')->where('show', 1)->where('channelId', $m3_array[1])->limit(5);
+            $three = DB::table('article')->select('id', 'title', 'channelId', 'img', 'createTime')->where('show', 1)->where('channelId', $m3_array[2])->limit(5);
+            $article = $three->union($first)->union($second)->orderBy('createTime', 'desc')->get()->toArray();
+            foreach($m3 as $it){
+                $it->children = array_filter($article, function($val) use ($it){
+                    return $val->channelId == $it->id;
+                });
+            };
+            $value['m3'] = $m3;
+        }
         return view('index', $value);
     }
 }

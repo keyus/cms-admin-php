@@ -38,6 +38,7 @@ class ConfigContentController extends Controller
             'link2_title','link2_url','link2_img',
             'link3_title','link3_url','link3_img',
         ]);
+        $row['updateTime'] = date('Y-m-d H:i:s');
         $res = DB::table('config_content')
             ->where('id', 1)
             ->update($row);
